@@ -1,0 +1,16 @@
+{
+  "name": "rebus",
+  "version": "1.0.0",
+  "description": "M-Pesa C2B merchant solution",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://Antony_Ndungu@bitbucket.org/Antony_Ndungu/rebus.git"
+  },
+  "author": "Antony Ndungu Maina",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/Antony_Ndungu/rebus#readme"
+}
