@@ -4,7 +4,7 @@
   "description": "M-Pesa C2B merchant solution",
   "main": "server.js",
   "scripts": {
-    "start": "babel-node server.js"
+    "start": "nodemon --exec babel-node server.js"
   },
   "repository": {
     "type": "git",
@@ -15,6 +15,10 @@
   "homepage": "https://bitbucket.org/Antony_Ndungu/rebus#readme",
   "devDependencies": {
     "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.6.0"
+    "babel-preset-env": "^1.6.0",
+    "nodemon": "^1.12.1"
+  },
+  "dependencies": {
+    "express": "^4.15.4"
   }
 }
