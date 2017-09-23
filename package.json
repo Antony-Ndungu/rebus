@@ -4,7 +4,7 @@
   "description": "M-Pesa C2B merchant solution",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "babel-node server.js"
   },
   "repository": {
     "type": "git",
@@ -12,5 +12,9 @@
   },
   "author": "Antony Ndungu Maina",
   "license": "ISC",
-  "homepage": "https://bitbucket.org/Antony_Ndungu/rebus#readme"
+  "homepage": "https://bitbucket.org/Antony_Ndungu/rebus#readme",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.0"
+  }
 }
