@@ -10,10 +10,18 @@ router.get("/", (req, res, next) => {
     });
 });
 
-router.get("/:resource", (req, res) => {
+router.get("/:resource/:id", (req, res) => {
     const resource = req.params.resource;
     const controller = controllers[resource];
-    controller.find(req.query, (err, payments) =>{
+    const id = req.params.id;
+    if(!controller){
+        res.json({
+            confirmation: "fail",
+            message: "Invalid resource request"
+        });
+        return;
+    }
+    controller.findById(id, (err, result) => {
         if(err){
             res.json({
                 confirmation: "fail",
@@ -23,7 +31,33 @@ router.get("/:resource", (req, res) => {
         }
         res.json({
             confirmation: "success",
-            result: payments
+            result: result
+        });
+    });
+
+});
+
+router.get("/:resource", (req, res) => {
+    const resource = req.params.resource;
+    const controller = controllers[resource];
+    if(!controller){
+        res.json({
+            confirmation: "fail",
+            message: "Invalid resource request"
+        });
+        return;
+    }
+    controller.find(req.query, (err, results) =>{
+        if(err){
+            res.json({
+                confirmation: "fail",
+                message: err
+            });
+            return;
+        }
+        res.json({
+            confirmation: "success",
+            result: results
         });
     });
 });
@@ -31,7 +65,14 @@ router.get("/:resource", (req, res) => {
 router.post("/:resource", (req, res) => {
     const resource = req.params.resource;
     const controller = controllers[resource];
-    controller.create(req.body, (err, payment) => {
+    if(!controller){
+        res.json({
+            confirmation: "fail",
+            message: "Invalid resource request"
+        });
+        return;
+    }
+    controller.create(req.body, (err, result) => {
         if(err){
             res.json({
                 confirmation: "fail",
@@ -41,7 +82,7 @@ router.post("/:resource", (req, res) => {
         }
         res.json({
             confirmation: "success",
-            result: payment
+            result: result
         });
     });
 });
