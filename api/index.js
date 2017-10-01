@@ -31,7 +31,7 @@ router.get("/:resource/:id", (req, res) => {
         }
         res.json({
             confirmation: "success",
-            result: result
+            result
         });
     });
 
@@ -57,7 +57,7 @@ router.get("/:resource", (req, res) => {
         }
         res.json({
             confirmation: "success",
-            result: results
+            results
         });
     });
 });
@@ -82,7 +82,59 @@ router.post("/:resource", (req, res) => {
         }
         res.json({
             confirmation: "success",
-            result: result
+            result
+        });
+    });
+});
+
+router.put("/:resource/:id", (req, res) => {
+    const resource = req.params.resource;
+    const id = req.params.id;
+    const controller = controllers[resource];
+    if(!controller){
+        res.json({
+            confirmation: "fail",
+            message: "Invalid resource request"
+        });
+        return;
+    }
+    controller.update(id, req.body, (err, result) => {
+        if(err){
+            res.json({
+                confirmation: "fail",
+                message: err
+            });
+            return;
+        }
+        res.json({
+            confirmation: "success",
+            result
+        })
+    });
+});
+
+router.delete("/:resource/:id", (req, res) => {
+    const resource = req.params.resource;
+    const id = req.params.id;
+    const controller = controllers[resource];
+    if(!controller){
+        res.json({
+            confirmation: "fail",
+            message: "Invalid resource request"
+        });
+        return;
+    }
+    controller.remove(id, err => {
+        if(err){
+            res.json({
+                confirmation: "fail",
+                message: err
+            });
+            return;
+        }
+        res.json({
+            confirmation: "success",
+            message: `The resource with id ${id} has been deleted successfully.`
         });
     });
 });
