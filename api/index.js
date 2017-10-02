@@ -1,7 +1,56 @@
 import express from "express";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import config from "../config";
 import controllers from "./controllers";
 
 const router = express.Router();
+
+
+router.post("/authenticate", (req, res) => {
+    const controller = controllers["merchants"];
+    controller.findOne({businessShortcode: req.body.businessShortcode}, (err, merchant) => {
+        if(err){
+            res.json({
+                confirmation: "fail",
+                message: err
+            });
+            return;
+        }
+        if(!merchant){
+            res.json({
+                confirmation: "fail",
+                message: "Authentication failed. Invalid credentials."
+            });
+            return;
+        }
+        bcrypt.compare(req.body.password, merchant.password, (err, result) => {
+            if(err){
+                res.json({
+                    confirmation: "fail",
+                    message: err
+                });
+                return;
+            }
+            if(!result){
+                res.json({
+                    confirmation: "fail",
+                    message: "Authentication failed. Invalid credentials."
+                });
+                return;
+            }
+            const token = jwt.sign(merchant, config.secret, {
+                expiresIn: (30 * 60) // token expires in 30 minutes
+            });
+            res.json({
+                confirmation: "success",
+                token
+            });
+        });
+
+    });
+});
+
 
 router.get("/", (req, res, next) => {
     res.json({
