@@ -40,7 +40,7 @@ router.post("/authenticate", (req, res) => {
                 return;
             }
             const token = jwt.sign(merchant, config.secret, {
-                expiresIn: (30 * 60) // token expires in 30 minutes
+                expiresIn: 30 * 60 // token expires in 30 minutes
             });
             res.json({
                 confirmation: "success",
@@ -58,6 +58,76 @@ router.get("/", (req, res, next) => {
         message: "Welcome to the Rebus API."
     });
 });
+
+router.post('/merchants', (req, res) => {
+    const controller = controllers["merchants"];
+    const saltRounds = 10;
+    bcrypt.genSalt(saltRounds, (err, salt) => {
+        bcrypt.hash(req.body.password, salt, (err, hash) => {
+            req.body.password = hash;
+            controller.create(req.body, (err, merchant) => {
+                if(err){
+                    if(err.code === 11000){
+                        res.status(403).json({
+                            confirmation: "fail",
+                            message: "A user with the provided business shortcode already exists."                
+                        });
+                        return;
+                    }
+                    res.json({
+                        confirmation: "fail",
+                        message: err
+                    });
+                    return;
+                }
+                const token = jwt.sign({data: merchant }, config.secret, {
+                    expiresIn: (30 * 60) // token expires in 30 minutes
+                });
+                res.json({
+                    confirmation: "success",
+                    token  
+                });
+            });
+            
+        });
+    });   
+});
+
+
+
+router.use((req, res, next) => {
+    let token = req.headers["auth-token"];
+    if(token){
+        if(token.length < 8) {
+            res.json({
+                confirmation: "fail",
+                message: "Invalid token. Please use this format => 'Bearer <token>'."
+            });
+        }
+        token = token.slice(7);
+    }
+    
+    if(token){
+        jwt.verify(token, config.secret, (err, decoded) => {
+            if(err){
+                res.json({
+                    confirmation: "fail",
+                    message: "Failed to authenticate token"
+                });
+            }else{
+                req.decoded = decoded;
+                next();
+            }
+        });
+    }else{
+        res.json({
+            confirmation: "fail",
+            message: "No token provided"
+        });
+    }
+
+});
+
 
 router.get("/:resource/:id", (req, res) => {
     const resource = req.params.resource;
