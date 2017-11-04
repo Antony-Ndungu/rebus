@@ -39,6 +39,14 @@ router.post("/authenticate", (req, res) => {
                 });
                 return;
             }
+            const { businessShortcode, email, name, phoneNumber } = merchant;
+
+            merchant = {
+                name,
+                businessShortcode,
+                email,
+                phoneNumber
+            }
             const token = jwt.sign(merchant, config.secret, {
                 expiresIn: 30 * 60 // token expires in 30 minutes
             });
