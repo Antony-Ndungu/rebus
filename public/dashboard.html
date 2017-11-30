@@ -8,10 +8,10 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-<body class="w3-light-grey">
+<body class="w3-white">
 
     <!-- Top container -->
-    <div class="w3-bar w3-top orange w3-large w3-card-4" style="z-index:4">
+    <div class="w3-bar w3-top primary-color-text w3-large w3-card-4" style="z-index:4">
         <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey" onclick="w3_open();"><i class="fa fa-bars"></i>  Menu</button>
         <span class="w3-bar-item w3-right">Merchant name</span>
     </div>
@@ -23,7 +23,7 @@
         </div>
         <div class="w3-bar-block">
             <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" onclick="w3_close()" title="close menu"><i class="fa fa-remove fa-fw"></i>  Close Menu</a>
-            <a href="#" class="w3-bar-item w3-button w3-padding w3-blue"><i class="fa fa-users fa-fw"></i>  Overview</a>
+            <a href="#" class="w3-bar-item w3-button w3-padding primary-color w3-text-white"><i class="fa fa-users fa-fw"></i>  Overview</a>
             <a href="/payments.html" class="w3-bar-item w3-button w3-padding"><i class="fa fa-money fa-fw"></i>  Payments</a>
             <a href="/customer.html" class="w3-bar-item w3-button w3-padding"><i class="fa fa-users fa-fw"></i>  Customers</a>
             <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-sitemap fa-fw"></i>  Merchant Profile</a>
@@ -47,7 +47,7 @@
 
         <div class="w3-row-padding w3-margin-bottom">
             <div class="w3-third">
-                <div class="w3-container w3-red w3-padding-16 w3-card-4">
+                <div class="w3-container primary-color w3-text-white w3-padding-16 w3-card-4">
                     <div class="w3-left"><i class="fa fa-money w3-xxxlarge"></i></div>
                     <div class="w3-right">
                         <h3>99</h3>
@@ -57,7 +57,7 @@
                 </div>
             </div>
             <div class="w3-third">
-                <div class="w3-container orange w3-padding-16 w3-card-4">
+                <div class="w3-container w3-white w3-padding-16 w3-card-4">
                     <div class="w3-left"><i class="fa fa-balance-scale w3-xxxlarge"></i></div>
                     <div class="w3-right">
                         <h3>Ksh. 99</h3>
@@ -67,7 +67,7 @@
                 </div>
             </div>
             <div class="w3-third">
-                <div class="w3-container w3-teal w3-padding-16 w3-card-4">
+                <div class="w3-container primary-color w3-text-white w3-padding-16 w3-card-4">
                     <div class="w3-left"><i class="fa fa-users w3-xxxlarge"></i></div>
                     <div class="w3-right">
                         <h3>23</h3>
@@ -143,8 +143,7 @@
         .append("svg")
         .attr("height", h)
         .style("width", "100%")
-        .attr("class", "w3-card-4")
-        .style("background", "lightblue");
+        .attr("class", "w3-card-4");
 
         
        
@@ -154,7 +153,6 @@
         .attr("height", h)
         .style("width", "100%")
         .attr("class", "w3-card-4")
-        .style("background", "lightblue")
         .style("margin", 0);
 
         svg1.selectAll("rect")

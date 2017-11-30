@@ -1,16 +1,32 @@
-$primary-color: #FF9800;
+$primary-color:#009688;
 $font-family: "Raleway", sans-serif;
 
 html, body, h1, h2, h3, h4, h5, h6 {
     font-family: $font-family;
 }
 
+body, input {
+    background-color: #ffffff;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%23009688' fill-opacity='0.14' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E");
+}
+
 .orange {
     background-color: $primary-color;
 }
 
+.primary-color {
+    background-color: $primary-color;
+}
+
+.primary-color-text {
+    color: $primary-color;
+}
+
+.primary-color-border {
+    border-color: $primary-color !important;
+}
 .center {
-    max-width: 500px;
+    max-width: 400px;
     margin: 0;
     position: absolute;
     top: 50%;
