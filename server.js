@@ -1,4 +1,5 @@
 import config from "./config";
+import serverRender from "./utils/serverRender";
 import express from "express";
 import api from "./api";
 import mongoose from "mongoose";
@@ -29,9 +30,14 @@ server.use(sassMiddleware({
 
 server.use("/api", api);
 server.use(express.static("public"));
+server.get("/", (req, res) => {
+    const file = fs.createReadStream(__dirname + "/public/app.html");
+    file.pipe(res);
+});
 
-/*server.get("/dashboard", (req, res) => {
-    fs.createReadStream(path.join(__dirname, "public/dashboard.html")).pipe(res);
-});*/
+server.get("/*", (req, res) => {
+    const context = {};
+    serverRender(req, res, context);
+});
 
 server.listen(config.port, () => console.log("Server listening on port", config.port));

@@ -8,12 +8,12 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-<body class="w3-light-grey">
+<body class="w3-white">
 
     <!-- Top container -->
-    <div class="w3-bar w3-top orange w3-large w3-card-4" style="z-index:4">
+    <div class="w3-bar w3-top  w3-large w3-card-4" style="z-index:4">
         <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey" onclick="w3_open();"><i class="fa fa-bars"></i>  Menu</button>
-        <span class="w3-bar-item w3-right">Merchant name</span>
+        <span class="w3-bar-item primary-color-text w3-right">Merchant name</span>
     </div>
 
     <!-- Sidebar/menu -->
@@ -23,8 +23,8 @@
         </div>
         <div class="w3-bar-block">
             <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" onclick="w3_close()" title="close menu"><i class="fa fa-remove fa-fw"></i>  Close Menu</a>
-            <a href="/dashboard.html" class="w3-bar-item w3-button w3-padding w3-blue"><i class="fa fa-users fa-fw"></i>  Overview</a>
-            <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-money fa-fw"></i>  Payments</a>
+            <a href="/dashboard.html" class="w3-bar-item w3-button w3-padding "><i class="fa fa-users fa-fw"></i>  Overview</a>
+            <a href="#" class="w3-bar-item w3-button w3-padding primary-color w3-text-white"><i class="fa fa-money fa-fw"></i>  Payments</a>
             <a href="/customer.html" class="w3-bar-item w3-button w3-padding"><i class="fa fa-users fa-fw"></i>  Customers</a>
             <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-sitemap fa-fw"></i>  Merchant Profile</a>
             <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-file fa-fw"></i>  Reports</a>
@@ -50,33 +50,36 @@
             <div class="w3-responsive">
                     <div class="row" style="margin-bottom: 50px">
                             
-                                    <div class="w3-half">
-                                        <div class="w3-quarter">
-                                                <select class="w3-select" name="option">
-                                                        <option value="" disabled selected>Search by </option>
-                                                        <option value="1">Transaction ID</option>
-                                                        <option value="2">MSISDN</option>
-                                                        <option value="3">Transaction Type</option>
-                                                        <option value="3">Account Number</option>
-                                                        <option value="3">Amount</option>
-                                                        <option value="3">Timestamp</option>
+                                    <div class="w3-twothird w3-card-4">
+                                        <div class="w3-third">
+                                                <select class="w3-select primary-color w3-text-white w3-border-top w3-border-bottom primary-color-border"  name="option">
+                                                        <option value="" disabled selected class="w3-text-black"> Search by </option>
+                                                        <option value="1"> Transaction ID</option>
+                                                        <option value="2"> MSISDN</option>
+                                                        <option value="3"> Transaction Type</option>
+                                                        <option value="3"> Account Number</option>
+                                                        <option value="3"> Amount</option>
+                                                        <option value="3"> Timestamp</option>
                                                 </select>
                                         </div>
-                                        <div class="w3-half">
-                                                <input class="w3-input w3-border" type="text" placeholder="Search">
+                                        <div class="w3-col w3-twothird">
+                                                <div class="w3-twothird">
+                                                        <input class="w3-input w3-border primary-color-border" type="text" placeholder="Type here to search">
+                                                </div>
+                                                <div class="w3-third">
+                                                        <button class="w3-button primary-color w3-text-white w3-border-top w3-border-bottom primary-color-border" style="width: 100%">Search</button>
+                                                </div>    
+                                                    
                                         </div>
-                                        <div class="w3-quarter">
-                                                <button class="w3-button orange w3-border">Search</button>
-                                        </div>    
-                                            
+                                        
                                     </div>
                                     
-                                    <div class="w3-half">
+                                    <div class="w3-third">
                                     </div>            
                     </div>
                 <table class="w3-table-all w3-hoverable w3-card-4 w3-small w3-margin-top">
                     <thead>
-                        <tr class="w3-orange">
+                        <tr class="primary-color-text">
                             <th>Transaction ID</th>
                             <th>MSISDN</th>
                             <th>Transaction Type</th>
@@ -93,10 +96,10 @@
                         <td>Antony</td>
                         <td>500</td>
                         <td>13.12.13</td>
-                        <td><button onclick="document.getElementById('id01').style.display='block'" class="w3-btn orange w3-border w3-round-large"><i class="fa fa-backward"></i> Reverse</button></td>
+                        <td><button onclick="document.getElementById('id01').style.display='block'" class="w3-btn primary-color w3-text-white w3-border w3-round-large"><i class="fa fa-backward"></i> Reverse</button></td>
                         <div id="id01" class="w3-modal">
-                            <div class="w3-modal-content w3-card-4 w3-animate-opacity" style="width: 20%">
-                                <header class="w3-container orange">
+                            <div class="w3-modal-content w3-card-4 w3-animate-opacity" style="width: 40%">
+                                <header class="w3-container primary-color w3-text-white">
                                     <span onclick="document.getElementById('id01').style.display='none'" class="w3-button orange w3-xlarge w3-display-topright">&times;</span>
                                     <h3>Reverse Transaction</h3>
                                 </header>
@@ -104,8 +107,8 @@
                                     <p>Are you sure you want to reverse this transaction?</p>
                                 </div>
                                 <div class="w3-container w3-light-grey w3-padding">
-                                    <button class="w3-button w3-left orange w3-border" onclick="document.getElementById('id01').style.display='none'">Yes</button>
-                                    <button class="w3-button w3-right orange w3-border" onclick="document.getElementById('id01').style.display='none'">No</button>
+                                    <button class="w3-button w3-left primary-color w3-text-white w3-border" onclick="document.getElementById('id01').style.display='none'">Yes</button>
+                                    <button class="w3-button w3-right primary-color w3-text-white w3-border" onclick="document.getElementById('id01').style.display='none'">No</button>
                                 </div>
                             </div>
                         </div>
@@ -137,7 +140,7 @@
     <div class="w3-center w3-margin-top">
         <div class="w3-bar w3-border w3-round">
             <a href="#" class="w3-bar-item w3-button">&laquo;</a>
-            <a href="#" class="w3-bar-item w3-button orange">1</a>
+            <a href="#" class="w3-bar-item w3-button primary-color w3-text-white">1</a>
             <a href="#" class="w3-bar-item w3-button">2</a>
             <a href="#" class="w3-bar-item w3-button">3</a>
             <a href="#" class="w3-bar-item w3-button">4</a>
@@ -147,7 +150,7 @@
 
 
     <!-- Footer -->
-    <footer class="w3-container w3-padding-16 w3-light-grey">
+    <footer class="w3-container w3-center w3-padding-16">
         <h4>Rebus</h4>
         <p>&copy; Copyright 2017</p>
     </footer>
