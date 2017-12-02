@@ -21,13 +21,13 @@ class Login extends Component {
     onSubmit = (e) => {
         e.preventDefault();
         const { errors , isValid } = validation(this.state);
+        this.setState({
+            errors
+        });
     
         if (isValid) {
-            console.log(this.state);
+            
         } else {
-            this.setState({
-                errors
-            }, () => console.log(this.state));
            
         }
 
@@ -48,7 +48,7 @@ class Login extends Component {
                     <form className="w3-container" onSubmit={this.onSubmit}>
                         <FormControl error={this.state.errors.businessShortcode} label="Business Shortcode" name="businessShortcode" type="text" value={this.state.businessShortcode} onChange={this.onChange}/>
                         {this.state.errors.businessShortcode && <span className="w3-text-red">{this.state.errors.businessShortcode}</span>}
-                        <FormControl error={this.state.errors.businessShortcode} label="Password" name="password" type="password" value={this.state.password} onChange={this.onChange}/>
+                        <FormControl error={this.state.errors.password} label="Password" name="password" type="password" value={this.state.password} onChange={this.onChange}/>
                         {this.state.errors.password && <span className="w3-text-red">{this.state.errors.password}</span>}
                         <p></p>
                         <button disabled={this.state.isLoading} className="w3-btn primary-color w3-text-white w3-border">{this.state.isLoading? "Logging in" : "Login"}</button>
