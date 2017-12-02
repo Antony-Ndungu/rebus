@@ -20,7 +20,12 @@ class Login extends Component {
         this.setState({
             isLoading: true
         });
-        setTimeout(() => console.log(this.state) , 50000);        
+        setTimeout(() =>{
+            console.log(this.state);
+            this.setState({
+                isLoading: false
+            });
+        }  , 3000);        
     }
 
     render(){
@@ -38,7 +43,7 @@ class Login extends Component {
                         <FormControl label="Business Shortcode" name="businessShortcode" type="text" value={this.state.businessShortcode} onChange={this.onChange}/>
                         <FormControl label="Password" name="password" type="password" value={this.state.password} onChange={this.onChange}/>
                         
-                        <button disabled={this.state.isLoading} className="w3-btn primary-color w3-text-white w3-border">{this.state.isLoading? "Logging in" : "Log"}</button>
+                        <button disabled={this.state.isLoading} className="w3-btn primary-color w3-text-white w3-border">{this.state.isLoading? "Logging in" : "Login"}</button>
                         <span className="w3-right w3-padding w3-hide-small">Forgot <a href="#">password?</a></span>
                         <p></p>
                     </form>
