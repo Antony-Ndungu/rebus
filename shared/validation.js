@@ -9,7 +9,7 @@ export default credentials => {
     }
 
     if(validator.isEmpty(credentials.password)){
-        errors.businessShortcode = "This field is required."
+        errors.password = "This field is required."
     }
 
     return {

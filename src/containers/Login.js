@@ -1,11 +1,14 @@
 import React, { Component } from "react";
-import FormControl from "../presentation/FormControl"
+import FormControl from "../presentation/FormControl";
+import validation from "../../shared/validation";
+
 
 class Login extends Component {
 
     state = {
         businessShortcode: '',
         password: '',
+        errors: {},
         isLoading: false
     }
 
@@ -17,15 +20,18 @@ class Login extends Component {
 
     onSubmit = (e) => {
         e.preventDefault();
-        this.setState({
-            isLoading: true
-        });
-        setTimeout(() =>{
+        const { errors , isValid } = validation(this.state);
+    
+        if (isValid) {
             console.log(this.state);
+        } else {
             this.setState({
-                isLoading: false
-            });
-        }  , 3000);        
+                errors
+            }, () => console.log(this.state));
+           
+        }
+
+               
     }
 
     render(){
@@ -40,9 +46,11 @@ class Login extends Component {
                     </div>
     
                     <form className="w3-container" onSubmit={this.onSubmit}>
-                        <FormControl label="Business Shortcode" name="businessShortcode" type="text" value={this.state.businessShortcode} onChange={this.onChange}/>
-                        <FormControl label="Password" name="password" type="password" value={this.state.password} onChange={this.onChange}/>
-                        
+                        <FormControl error={this.state.errors.businessShortcode} label="Business Shortcode" name="businessShortcode" type="text" value={this.state.businessShortcode} onChange={this.onChange}/>
+                        {this.state.errors.businessShortcode && <span className="w3-text-red">{this.state.errors.businessShortcode}</span>}
+                        <FormControl error={this.state.errors.businessShortcode} label="Password" name="password" type="password" value={this.state.password} onChange={this.onChange}/>
+                        {this.state.errors.password && <span className="w3-text-red">{this.state.errors.password}</span>}
+                        <p></p>
                         <button disabled={this.state.isLoading} className="w3-btn primary-color w3-text-white w3-border">{this.state.isLoading? "Logging in" : "Login"}</button>
                         <span className="w3-right w3-padding w3-hide-small">Forgot <a href="#">password?</a></span>
                         <p></p>
