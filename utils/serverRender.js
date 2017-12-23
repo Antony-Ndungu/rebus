@@ -1,17 +1,21 @@
 import React from "react";
 import ReactDOMServer from "react-dom/server";
+import { Provider } from "react-redux";
+import store from "../src/store";
 import { StaticRouter, Route } from "react-router";
 import Login from "../src/containers/Login";
 
 
-export default (req, res, context ) => {
+export default (req, res, context) => {
     const html = ReactDOMServer.renderToString(
         <StaticRouter location={req.url} context={context}>
-            <Route exact path="/login" component={Login}/>
+            <Provider store={store}>
+                <Route exact path="/login" component={Login} />
+            </Provider>
         </StaticRouter>
     );
 
-    if(context.url){
+    if (context.url) {
         res.writeHead(301, {
             Location: context.url
         });
@@ -27,11 +31,10 @@ export default (req, res, context ) => {
                 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
                 <link rel="stylesheet" href="style.css">
                 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
             </head>
             <body class="w3-white">
-                <div class="w3-container">
-                    <div id="app"></div>
-                </div>
+                <div id="app"></div>
                 <script src="bundle.js"></script>
             </body>
         </html>`

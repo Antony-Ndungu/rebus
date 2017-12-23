@@ -3,11 +3,20 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import config from "../config";
 import controllers from "./controllers";
+import { validateLoginInput } from "../shared/validation";
 
 const router = express.Router();
 
 
 router.post("/authenticate", (req, res) => {
+    const errors = validateLoginInput(req.body);
+    if(Object.keys(errors).length){
+        res.json({
+            confirmation: "fail",
+            errors
+        });
+        return;
+    }
     const controller = controllers["merchants"];
     controller.findOne({businessShortcode: req.body.businessShortcode}, (err, merchant) => {
         if(err){
@@ -39,13 +48,11 @@ router.post("/authenticate", (req, res) => {
                 });
                 return;
             }
-            const { businessShortcode, email, name, phoneNumber } = merchant;
+            const { businessShortcode, name } = merchant; 
 
             merchant = {
                 name,
-                businessShortcode,
-                email,
-                phoneNumber
+                businessShortcode
             }
             const token = jwt.sign(merchant, config.secret, {
                 expiresIn: 30 * 60 // token expires in 30 minutes

@@ -1,0 +1,2 @@
+export const SET_MERCHANT = "SET_MERCHANT";
+export const LOGOUT_MERCHANT = "LOGOUT_MERCHANT";

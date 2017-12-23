@@ -1,7 +1,7 @@
 import validator from "validator";
-import isEmpty from "lodash/isEmpty"
 
-export default credentials => {
+
+export const validateLoginInput = credentials => {
     const errors = {}
 
     if(validator.isEmpty(credentials.businessShortcode)){
@@ -11,9 +11,5 @@ export default credentials => {
     if(validator.isEmpty(credentials.password)){
         errors.password = "This field is required."
     }
-
-    return {
-        errors,
-        isValid: isEmpty(errors)
-    }
+    return errors;
 }

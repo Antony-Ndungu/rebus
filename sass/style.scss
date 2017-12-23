@@ -5,11 +5,6 @@ html, body, h1, h2, h3, h4, h5, h6 {
     font-family: $font-family;
 }
 
-body, input {
-    background-color: #ffffff;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%23009688' fill-opacity='0.14' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E");
-}
-
 .orange {
     background-color: $primary-color;
 }
@@ -20,6 +15,10 @@ body, input {
 
 .primary-color-text {
     color: $primary-color;
+}
+
+.primary-color-hover:hover {
+    background-color: $primary-color;
 }
 
 .primary-color-border {
