@@ -4,9 +4,9 @@ const HTMLPlugin = require("html-webpack-plugin")
 
 module.exports =  {
     entry: {
-        bundle: "./src/index.js",
-        vendor: [ "classnames", "lodash", "prop-types", "react", "react-dom", "react-redux", "react-router", "react-router-dom", "redux",
-        "redux-thunk", "validator"
+        bundle: ["babel-polyfill", "./src/index.js"],
+        vendor: [ "preact-compat", "classnames", "lodash", "prop-types", "react-redux", "react-router", "react-router-dom", "redux",
+        "redux-thunk", "validator", "axios", "jsonwebtoken", "babel-polyfill"
         ]
     },
     output: {
@@ -17,7 +17,8 @@ module.exports =  {
         loaders: [
             {
                 test:/\.js$/,
-                loader: "babel-loader"
+                loader: "babel-loader",
+                exclude:/node_modules/
             }
         ]
     },
@@ -27,10 +28,19 @@ module.exports =  {
     },
     plugins:[
         new webpack.optimize.CommonsChunkPlugin({
-            name: ["vendor", "manifest"]
+            names: ["vendor", "manifest"]
         }),
         new HTMLPlugin({
             template: "./src/index.html"
+        }),
+        new webpack.DefinePlugin({
+            "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV)
         })
-    ]
+    ],
+    resolve: {
+        "alias": {
+          "react": "preact-compat",
+          "react-dom": "preact-compat"
+        }
+    }
 }

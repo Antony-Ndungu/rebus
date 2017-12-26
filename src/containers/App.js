@@ -4,12 +4,15 @@ import { Route, Link, withRouter } from "react-router-dom";
 import PrivateRoute from "../presentation/PrivateRoute";
 import { connect } from "react-redux";
 import axios from "axios";
-import jwt from "jsonwebtoken"
+
 
 import Login from "./Login";
-import Dashboard from "./Dashboard";
-import ForgotPassword from "./ForgotPassword";
 import SuccessAlert from "../presentation/SuccessAlert";
+import asyncComponent from "../AsyncComponent";
+
+
+const AsyncForgotPassword = asyncComponent(() => import("./ForgotPassword"));
+const AsyncDashboard = asyncComponent(() => import("./Dashboard"));
 
 (function() {
     let token = localStorage.getItem("token");
@@ -24,23 +27,14 @@ import SuccessAlert from "../presentation/SuccessAlert";
 })();
 
 const App = (props) => {
-    let decoded = jwt.decode(props.token, { complete: true });
-    let merchantName;
-    try {
-        merchantName = decoded.payload.name;
-    }catch(e) {
-        merchantName = null;
-    }
-    
     return (
+            
             <div>
                 <Route exact path="/" render={() => <div><Link to="/login">login</Link></div>} />
                 <Route path="/login" component={Login} />   
-                <Route path="/forgot-password" render={()=> {
-                    return props.passwordResetEmailSent ? <SuccessAlert/> :<ForgotPassword/>
-                }} />  
+                <Route path="/forgot-password" component={AsyncForgotPassword}/>  
                 <Route path="/email-sent" component={SuccessAlert} />                  
-                <PrivateRoute path="/dashboard" Component={Dashboard} merchantName={merchantName} authed={props.isAuthenticated}/>
+                <PrivateRoute path="/dashboard" Component={AsyncDashboard}  authed={props.isAuthenticated}/>
             </div>
     );
 }

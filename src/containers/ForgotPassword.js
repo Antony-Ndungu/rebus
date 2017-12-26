@@ -58,7 +58,7 @@ class ForgotPassword extends Component {
                         {this.state.errors.businessShortcode && <span className="w3-text-red">{this.state.errors.businessShortcode}</span>}  
                         <p></p>
                         <Button isLoading={this.state.isLoading} text="Send reset email" loadingText="Sending reset email"/> 
-                        <span className="w3-right w3-padding w3-hide-small"><Link to="/login">Cancel</Link></span>
+                        <span className="w3-right w3-padding"><Link to="/login">Cancel</Link></span>
                         <p></p>
                     </form>
                 </div>

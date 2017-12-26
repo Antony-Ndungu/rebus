@@ -81,7 +81,7 @@ class Login extends Component {
                         {this.state.errors.password && <span className="w3-text-red">{this.state.errors.password}</span>}
                         <p></p>
                         <Button isLoading={this.state.isLoading} text="Log In" loadingText="Loggin In"/>
-                        <span className="w3-right w3-padding w3-hide-small">Forgot <Link to="/forgot-password">password?</Link></span>
+                        <span className="w3-right w3-padding">Forgot <Link to="/forgot-password">password?</Link></span>
                         <p></p>
                     </form>
                 </div>
