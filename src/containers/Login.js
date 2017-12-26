@@ -5,7 +5,7 @@ import { validateLoginInput } from "../../shared/validation";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { merchantLogin } from "../actions/merchantActions";
-import { Redirect } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 
 
 class Login extends Component {
@@ -80,8 +80,8 @@ class Login extends Component {
                         <FormControl error={this.state.errors.password} label="Password" name="password" type="password" value={this.state.password} onChange={this.onChange}/>
                         {this.state.errors.password && <span className="w3-text-red">{this.state.errors.password}</span>}
                         <p></p>
-                        <Button isLoading={this.state.isLoading}/>
-                        <span className="w3-right w3-padding w3-hide-small">Forgot <a href="#">password?</a></span>
+                        <Button isLoading={this.state.isLoading} text="Log In" loadingText="Loggin In"/>
+                        <span className="w3-right w3-padding w3-hide-small">Forgot <Link to="/forgot-password">password?</Link></span>
                         <p></p>
                     </form>
                 </div>

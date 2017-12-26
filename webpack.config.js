@@ -1,10 +1,17 @@
 const path = require("path");
+const webpack = require("webpack")
+const HTMLPlugin = require("html-webpack-plugin")
 
 module.exports =  {
-    entry: path.join(__dirname, "src/index.js"),
+    entry: {
+        bundle: "./src/index.js",
+        vendor: [ "classnames", "lodash", "prop-types", "react", "react-dom", "react-redux", "react-router", "react-router-dom", "redux",
+        "redux-thunk", "validator"
+        ]
+    },
     output: {
         path: path.join(__dirname, "public"),
-        filename: "bundle.js"
+        filename: "[name].[chunkhash].js"
     },
     module: {
         loaders: [
@@ -17,5 +24,13 @@ module.exports =  {
     node: {
         dns: "mock",
         net: "mock"
-    }
+    },
+    plugins:[
+        new webpack.optimize.CommonsChunkPlugin({
+            name: ["vendor", "manifest"]
+        }),
+        new HTMLPlugin({
+            template: "./src/index.html"
+        })
+    ]
 }

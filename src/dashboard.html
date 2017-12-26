@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<title>Rebus</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<body class="w3-white">
+
+    <!-- Top container -->
+    <div class="w3-bar w3-top primary-color-text w3-large w3-card-4" style="z-index:4">
+        <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey" onclick="w3_open();"><i class="fa fa-bars"></i>  Menu</button>
+        <span class="w3-bar-item w3-right">Merchant name</span>
+    </div>
+
+    <!-- Sidebar/menu -->
+    <nav class="w3-sidebar w3-collapse w3-white w3-animate-left" style="z-index:3;width:300px;" id="mySidebar"><br>
+        <div class="w3-container">
+            <h5>Dashboard</h5>
+        </div>
+        <div class="w3-bar-block">
+            <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" onclick="w3_close()" title="close menu"><i class="fa fa-remove fa-fw"></i>  Close Menu</a>
+            <a href="#" class="w3-bar-item w3-button w3-padding primary-color w3-text-white"><i class="fa fa-users fa-fw"></i>  Overview</a>
+            <a href="/payments.html" class="w3-bar-item w3-button w3-padding"><i class="fa fa-money fa-fw"></i>  Payments</a>
+            <a href="/customer.html" class="w3-bar-item w3-button w3-padding"><i class="fa fa-users fa-fw"></i>  Customers</a>
+            <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-sitemap fa-fw"></i>  Merchant Profile</a>
+            <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-file fa-fw"></i>  Reports</a>
+            <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-shopping-cart fa-fw"></i>  Marketing</a>
+        </div>
+    </nav>
+
+
+    <!-- Overlay effect when opening sidebar on small screens -->
+    <div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu"
+        id="myOverlay"></div>
+
+    <!-- !PAGE CONTENT! -->
+    <div class="w3-main" style="margin-left:300px;margin-top:43px;">
+
+        <!-- Header -->
+        <header class="w3-container" style="padding-top:22px">
+            <h5><b><i class="fa fa-dashboard"></i> My Dashboard</b></h5>
+        </header>
+
+        <div class="w3-row-padding w3-margin-bottom">
+            <div class="w3-third">
+                <div class="w3-container primary-color w3-text-white w3-padding-16 w3-card-4">
+                    <div class="w3-left"><i class="fa fa-money w3-xxxlarge"></i></div>
+                    <div class="w3-right">
+                        <h3>99</h3>
+                    </div>
+                    <div class="w3-clear"></div>
+                    <h4>Payments</h4>
+                </div>
+            </div>
+            <div class="w3-third">
+                <div class="w3-container w3-white w3-padding-16 w3-card-4">
+                    <div class="w3-left"><i class="fa fa-balance-scale w3-xxxlarge"></i></div>
+                    <div class="w3-right">
+                        <h3>Ksh. 99</h3>
+                    </div>
+                    <div class="w3-clear"></div>
+                    <h4>Account Balance</h4>
+                </div>
+            </div>
+            <div class="w3-third">
+                <div class="w3-container primary-color w3-text-white w3-padding-16 w3-card-4">
+                    <div class="w3-left"><i class="fa fa-users w3-xxxlarge"></i></div>
+                    <div class="w3-right">
+                        <h3>23</h3>
+                    </div>
+                    <div class="w3-clear"></div>
+                    <h4>Customers</h4>
+                </div>
+            </div>
+        </div>
+        <div id="visualizations" class="w3-row-padding">
+            <div class="w3-half" id="">
+                <div class="container w3-card4" id="svg1-container">
+
+                </div>
+            </div>
+            <div class="w3-half">
+                <div class="container w3-card4" id="svg2-container">
+
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Footer -->
+        <footer class="w3-container w3-padding-16 w3-light-grey">
+            <h4>Rebus</h4>
+            <p>&copy; Copyright 2017</p>
+        </footer>
+
+        <!-- End page content -->
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.2.3/d3.min.js"></script>
+    <script>
+        // Get the Sidebar
+        var mySidebar = document.getElementById("mySidebar");
+
+        // Get the DIV with overlay effect
+        var overlayBg = document.getElementById("myOverlay");
+
+        // Toggle between showing and hiding the sidebar, and add overlay effect
+        function w3_open() {
+            if (mySidebar.style.display === 'block') {
+                mySidebar.style.display = 'none';
+                overlayBg.style.display = "none";
+            } else {
+                mySidebar.style.display = 'block';
+                overlayBg.style.display = "block";
+            }
+        }
+
+        // Close the sidebar with the close button
+        function w3_close() {
+            mySidebar.style.display = "none";
+            overlayBg.style.display = "none";
+        }
+
+        // D3 code
+        const h = 500;
+        const yPadding = 20;
+        const xPadding = 25;
+        const scale = d3.scaleLinear();
+        
+        
+        const payments = [34, 23, 40, 33, 23, 23, 34];
+        const customers = [4, 3, 5, 7, 9, 3, 7];
+
+       
+
+        paymentScale = scale.domain([0, d3.max(payments)]).range([h -yPadding, yPadding]);
+        paymentAxis = d3.axisLeft(paymentScale);
+
+        const svg1 = d3.select("#svg1-container")
+        .append("svg")
+        .attr("height", h)
+        .style("width", "100%")
+        .attr("class", "w3-card-4");
+
+        
+       
+
+        const svg2 = d3.select("#svg2-container")
+        .append("svg")
+        .attr("height", h)
+        .style("width", "100%")
+        .attr("class", "w3-card-4")
+        .style("margin", 0);
+
+        svg1.selectAll("rect")
+        .data(payments)
+        .enter()
+        .append("rect")
+        .attr("class", "payments-bar")
+        .attr("width", "8%")
+        .style("margin", "4%")
+        .attr("height", d => paymentScale(0) - paymentScale(d))
+        .attr("x", (d, i) => 4 + (i * 12 ) + "%")
+        .attr("transform", "translate(" + xPadding + ",0)")
+        .attr("y", d => paymentScale(d));
+
+        svg1.append("g")
+        .attr("transform", "translate(" + xPadding + ",0)")
+        .call(paymentAxis);
+
+        const weekScale = d3.scaleBand().domain(["Mon", "Tue", "Wed", "Thurs", "Fri", "Sat", "Sun"]).range([xPadding, + (svg1.style("width").replace("px", ""))])
+        .padding(2 * (d3.select(".payments-bar").style("margin").replace("%", "")));
+        const weekAxis = d3.axisBottom(weekScale);
+
+        svg1.append("g")
+        .attr("transform", "translate(0" +  "," + (h - yPadding) + " )")
+        .call(weekAxis);
+
+        /*const svg1 = d3.select("#svg1-container")
+            .append("svg")
+            .attr("height", h)
+            .attr("class", "w3-card-4")
+            .style("width", "100%");
+        const svg2 = d3.select("#svg2-container")
+            .append("svg")
+            .attr("height", h)
+            .attr("class", "w3-card-4")
+            .style("width", "100%");
+
+
+        svg1.selectAll("rect")
+            .data(payments)
+            .enter()
+            .append("rect")
+            .attr("width", 50)
+            .attr("fill", "#f44336")
+            .attr("height", d => paymentScale(d))
+            .attr("x", (d, i) => {
+                return i * 70 + 70;
+            })
+            .attr("y", d => {
+                return paymentScale(d);
+            })
+            .attr("class", "bar")
+            .append("title")
+            .text(d => d);
+
+        svg1.selectAll("text")
+            .data(payments)
+            .enter()
+            .append("text")
+            .attr("x", (d, i) => {
+                return i * 70 + 90;
+            })
+            .attr("y", d => {
+                return h - paymentScale(d);
+            })
+            .text(d => d)
+            .attr("fill", "#f44336");
+
+
+        svg2.selectAll("rect")
+            .data(customers)
+            .enter()
+            .append("rect")
+            .attr("width", 50)
+            .attr("fill", "#009688")
+            .attr("height", d => h - customerScale(0) - customerScale(d))
+            .attr("x", (d, i) => {
+                return 70 + i * 70;
+            })
+            .attr("y", d => {
+                return  h  - customerScale(d) - padding;
+            })
+            .attr("class", "bar")
+            .append("title")
+            .text(d => d);
+
+        svg2.selectAll("text")
+            .data(customers)
+            .enter()
+            .append("text")
+            .attr("x", (d, i) => {
+                return i * 70 + 90;
+            })
+            .attr("y", d => {
+                return h - customerScale(d) - 5;
+            })
+            .text(d => d)
+            .attr("fill", "#009688");
+
+        svg2.append("g")
+        .attr("transform", "translate("+ padding +", 0)")
+        .call(customerAxis);
+        */
+    </script>
+
+</body>
+
+</html>

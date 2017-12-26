@@ -31,7 +31,7 @@ server.use(sassMiddleware({
 server.use("/api", api);
 server.use(express.static("public"));
 server.get("/", (req, res) => {
-    const file = fs.createReadStream(__dirname + "/public/app.html");
+    const file = fs.createReadStream(__dirname + "/public/index.html");
     file.pipe(res);
 });
 

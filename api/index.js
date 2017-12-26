@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import config from "../config";
 import controllers from "./controllers";
+import transporter from "../utils/sendEmail";
 import { validateLoginInput } from "../shared/validation";
 
 const router = express.Router();
@@ -66,6 +67,47 @@ router.post("/authenticate", (req, res) => {
     });
 });
 
+router.post("/password-reset", (req, res) => {
+    const controller = controllers['merchants'];
+    controller.findOne({businessShortcode: req.body.businessShortcode}, (err, merchant) => {
+        if(err){
+            res.json({
+                confirmation: "fail",
+                message: err
+            });
+            return;
+        }
+        if(!merchant){
+            res.json({
+                confirmation: "fail",
+                message: "No merchant exist with the provided Business Shortcode."
+            });
+            return;
+        }
+
+        let mailOptions = {
+            from: 'Rebus Kenya',
+            to: merchant.email,
+            subject: 'Reset Password',
+            html: "<h1>Test email.</h1>"
+        };
+        
+        transporter.sendMail(mailOptions, function (err, info) {
+            if (err) {
+                res.json({
+                    confirmation: "fail",
+                    message: err
+                });
+            } else {
+                res.json({
+                    confirmation: "success",
+                    message: "Email sent: " + info.response
+                });
+            }
+        });
+    });
+});
+
 
 router.get("/", (req, res, next) => {
     res.json({
@@ -107,6 +149,7 @@ router.post('/merchants', (req, res) => {
         });
     });   
 });
+
 
 
 

@@ -8,8 +8,8 @@ import jwt from "jsonwebtoken"
 
 import Login from "./Login";
 import Dashboard from "./Dashboard";
-
-
+import ForgotPassword from "./ForgotPassword";
+import SuccessAlert from "../presentation/SuccessAlert";
 
 (function() {
     let token = localStorage.getItem("token");
@@ -35,7 +35,11 @@ const App = (props) => {
     return (
             <div>
                 <Route exact path="/" render={() => <div><Link to="/login">login</Link></div>} />
-                <Route path="/login" component={Login} />                
+                <Route path="/login" component={Login} />   
+                <Route path="/forgot-password" render={()=> {
+                    return props.passwordResetEmailSent ? <SuccessAlert/> :<ForgotPassword/>
+                }} />  
+                <Route path="/email-sent" component={SuccessAlert} />                  
                 <PrivateRoute path="/dashboard" Component={Dashboard} merchantName={merchantName} authed={props.isAuthenticated}/>
             </div>
     );
@@ -44,7 +48,8 @@ const App = (props) => {
 const mapStateToProps = (state) => {
     return {
         isAuthenticated: state.merchant.isAuthenticated,
-        token: state.merchant.token
+        token: state.merchant.token,
+        passwordResetEmailSent: state.merchant.passwordResetEmailSent
     }
 }
 export default withRouter(connect(mapStateToProps)(App));
