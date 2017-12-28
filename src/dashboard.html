@@ -129,55 +129,55 @@
         const yPadding = 20;
         const xPadding = 25;
         const scale = d3.scaleLinear();
-        
-        
+
+
         const payments = [34, 23, 40, 33, 23, 23, 34];
         const customers = [4, 3, 5, 7, 9, 3, 7];
 
-       
 
-        paymentScale = scale.domain([0, d3.max(payments)]).range([h -yPadding, yPadding]);
+
+        paymentScale = scale.domain([0, d3.max(payments)]).range([h - yPadding, yPadding]);
         paymentAxis = d3.axisLeft(paymentScale);
 
         const svg1 = d3.select("#svg1-container")
-        .append("svg")
-        .attr("height", h)
-        .style("width", "100%")
-        .attr("class", "w3-card-4");
+            .append("svg")
+            .attr("height", h)
+            .style("width", "100%")
+            .attr("class", "w3-card-4");
 
-        
-       
+
+
 
         const svg2 = d3.select("#svg2-container")
-        .append("svg")
-        .attr("height", h)
-        .style("width", "100%")
-        .attr("class", "w3-card-4")
-        .style("margin", 0);
+            .append("svg")
+            .attr("height", h)
+            .style("width", "100%")
+            .attr("class", "w3-card-4")
+            .style("margin", 0);
 
         svg1.selectAll("rect")
-        .data(payments)
-        .enter()
-        .append("rect")
-        .attr("class", "payments-bar")
-        .attr("width", "8%")
-        .style("margin", "4%")
-        .attr("height", d => paymentScale(0) - paymentScale(d))
-        .attr("x", (d, i) => 4 + (i * 12 ) + "%")
-        .attr("transform", "translate(" + xPadding + ",0)")
-        .attr("y", d => paymentScale(d));
+            .data(payments)
+            .enter()
+            .append("rect")
+            .attr("class", "payments-bar")
+            .attr("width", "8%")
+            .style("margin", "4%")
+            .attr("height", d => paymentScale(0) - paymentScale(d))
+            .attr("x", (d, i) => 4 + (i * 12) + "%")
+            .attr("transform", "translate(" + xPadding + ",0)")
+            .attr("y", d => paymentScale(d));
 
         svg1.append("g")
-        .attr("transform", "translate(" + xPadding + ",0)")
-        .call(paymentAxis);
+            .attr("transform", "translate(" + xPadding + ",0)")
+            .call(paymentAxis);
 
         const weekScale = d3.scaleBand().domain(["Mon", "Tue", "Wed", "Thurs", "Fri", "Sat", "Sun"]).range([xPadding, + (svg1.style("width").replace("px", ""))])
-        .padding(2 * (d3.select(".payments-bar").style("margin").replace("%", "")));
+            .padding(2 * (d3.select(".payments-bar").style("margin").replace("%", "")));
         const weekAxis = d3.axisBottom(weekScale);
 
         svg1.append("g")
-        .attr("transform", "translate(0" +  "," + (h - yPadding) + " )")
-        .call(weekAxis);
+            .attr("transform", "translate(0" + "," + (h - yPadding) + " )")
+            .call(weekAxis);
 
         /*const svg1 = d3.select("#svg1-container")
             .append("svg")

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { SET_MERCHANT, LOGOUT_MERCHANT, RESET_PASSWORD, RESET_PASSWORD_EMAIL_SENT_MESSAGE, RESET_PASSWORD_SET} from "../constants";
+import { SET_MERCHANT, LOGOUT_MERCHANT, CLOSE_SIDEBAR, OPEN_SIDEBAR,RESET_PASSWORD, RESET_PASSWORD_EMAIL_SENT_MESSAGE, RESET_PASSWORD_SET} from "../constants";
 
 export const merchantLogin = (credentials) => {
     return dispatch => {
@@ -26,6 +26,18 @@ export const merchantLogout = () => {
     localStorage.removeItem("token");
     return {
         type: LOGOUT_MERCHANT
+    }
+}
+
+export const openSidebar = () => {
+    return {
+        type: OPEN_SIDEBAR
+    }
+}
+
+export const closeSidebar = () => {
+    return {
+        type: CLOSE_SIDEBAR
     }
 }
 

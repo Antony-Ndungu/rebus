@@ -1,14 +1,12 @@
 import React from "react";
 import TopContainer from "./TopContainer";
+import Sidebar from "./Sidebar";
+import Overlay from "../presentation/Overlay";
 import PropTypes from "prop-types"
 import { connect } from "react-redux"
 import jwt from "jsonwebtoken"
 
-
-
-
-
-const Dashboard =  ({token}) => {
+const Dashboard =  ({token, displaySidebar}) => {
     let decoded = jwt.decode(token, { complete: true });
     let merchantName;
     try {
@@ -16,7 +14,14 @@ const Dashboard =  ({token}) => {
     }catch(e) {
         merchantName = null;
     }
-    return <TopContainer merchantName={merchantName}/>;
+    return(
+        <div>
+            <TopContainer merchantName={merchantName}/>
+            <br/><br/>
+            <Sidebar displaySidebar={displaySidebar}/>
+            {displaySidebar && <Overlay/>} 
+        </div>
+    );
 }
 
 Dashboard.propTypes = {
@@ -25,7 +30,8 @@ Dashboard.propTypes = {
 
 const mapStateToProps = (state) => {
     return {
-        token: state.merchant.token
+        token: state.merchant.token,
+        displaySidebar: state.merchant.displaySidebar
     }
 }
 

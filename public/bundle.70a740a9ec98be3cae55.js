@@ -14,6 +14,8 @@ var LOGOUT_MERCHANT = exports.LOGOUT_MERCHANT = "LOGOUT_MERCHANT";
 var RESET_PASSWORD_EMAIL_SENT_MESSAGE = exports.RESET_PASSWORD_EMAIL_SENT_MESSAGE = "RESET_PASSWORD_EMAIL_SENT_MESSAGE";
 var RESET_PASSWORD = exports.RESET_PASSWORD = "RESET_PASSWORD";
 var RESET_PASSWORD_SET = exports.RESET_PASSWORD_SET = "RESET_PASSWORD_SET";
+var OPEN_SIDEBAR = exports.OPEN_SIDEBAR = "OPEN_SIDEBAR";
+var CLOSE_SIDEBAR = exports.CLOSE_SIDEBAR = "CLOSE_SIDEBAR";
 
 /***/ }),
 
@@ -26,7 +28,7 @@ var RESET_PASSWORD_SET = exports.RESET_PASSWORD_SET = "RESET_PASSWORD_SET";
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.resetPasswordReset = exports.resetPassword = exports.resetMerchantPassword = exports.merchantLogout = exports.merchantLogin = undefined;
+exports.resetPasswordReset = exports.resetPassword = exports.resetMerchantPassword = exports.closeSidebar = exports.openSidebar = exports.merchantLogout = exports.merchantLogin = undefined;
 
 var _axios = __webpack_require__(144);
 
@@ -61,6 +63,18 @@ var merchantLogout = exports.merchantLogout = function merchantLogout() {
     localStorage.removeItem("token");
     return {
         type: _constants.LOGOUT_MERCHANT
+    };
+};
+
+var openSidebar = exports.openSidebar = function openSidebar() {
+    return {
+        type: _constants.OPEN_SIDEBAR
+    };
+};
+
+var closeSidebar = exports.closeSidebar = function closeSidebar() {
+    return {
+        type: _constants.CLOSE_SIDEBAR
     };
 };
 
@@ -871,7 +885,7 @@ var _constants = __webpack_require__(146);
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 exports.default = function () {
-    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { isAuthenticated: false, token: null, passwordReset: { emailSent: false, message: null } };
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { isAuthenticated: false, token: null, displaySidebar: false, passwordReset: { emailSent: false, message: null } };
     var action = arguments[1];
 
     switch (action.type) {
@@ -891,6 +905,11 @@ exports.default = function () {
                 passwordReset: Object.assign.apply(Object, [{}].concat(_toConsumableArray(state.passwordReset), [{ emailSent: false, message: null }]))
             });
             break;
+        case _constants.CLOSE_SIDEBAR:
+            state = Object.assign({}, state, { displaySidebar: false });
+            break;
+        case _constants.OPEN_SIDEBAR:
+            state = Object.assign({}, state, { displaySidebar: !state.displaySidebar });
     }
     return state;
 };

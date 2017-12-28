@@ -1,6 +1,6 @@
-import { SET_MERCHANT, LOGOUT_MERCHANT, RESET_PASSWORD_EMAIL_SENT_MESSAGE, RESET_PASSWORD_SET } from "../constants";
+import { SET_MERCHANT, LOGOUT_MERCHANT, CLOSE_SIDEBAR, OPEN_SIDEBAR, RESET_PASSWORD_EMAIL_SENT_MESSAGE, RESET_PASSWORD_SET } from "../constants";
 
-export default (state = { isAuthenticated: false, token: null, passwordReset: { emailSent: false, message: null } }, action) => {
+export default (state = { isAuthenticated: false, token: null, displaySidebar: false, passwordReset: { emailSent: false, message: null } }, action) => {
     switch (action.type) {
         case SET_MERCHANT:
             state = Object.assign({}, state, { isAuthenticated: true, token: action.token });
@@ -20,6 +20,11 @@ export default (state = { isAuthenticated: false, token: null, passwordReset: { 
                     { emailSent: false, message: null })
             });
             break;
+        case CLOSE_SIDEBAR:
+            state = Object.assign({}, state, { displaySidebar: false });
+            break;
+            case OPEN_SIDEBAR:
+            state = Object.assign({}, state, { displaySidebar: !state.displaySidebar})
     }
     return state;
 }
