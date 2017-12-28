@@ -1,6 +1,6 @@
 webpackJsonp([0],{
 
-/***/ 727:
+/***/ 728:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14,7 +14,7 @@ var _react = __webpack_require__(9);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _TopContainer = __webpack_require__(728);
+var _TopContainer = __webpack_require__(729);
 
 var _TopContainer2 = _interopRequireDefault(_TopContainer);
 
@@ -24,7 +24,7 @@ var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _reactRedux = __webpack_require__(80);
 
-var _jsonwebtoken = __webpack_require__(283);
+var _jsonwebtoken = __webpack_require__(284);
 
 var _jsonwebtoken2 = _interopRequireDefault(_jsonwebtoken);
 
@@ -40,7 +40,6 @@ var Dashboard = function Dashboard(_ref) {
     } catch (e) {
         merchantName = null;
     }
-
     return _react2.default.createElement(_TopContainer2.default, { merchantName: merchantName });
 };
 
@@ -58,7 +57,7 @@ exports.default = (0, _reactRedux.connect)(mapStateToProps)(Dashboard);
 
 /***/ }),
 
-/***/ 728:
+/***/ 729:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -78,9 +77,9 @@ var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _reactRedux = __webpack_require__(80);
 
-var _redux = __webpack_require__(60);
+var _redux = __webpack_require__(47);
 
-var _merchantActions = __webpack_require__(279);
+var _merchantActions = __webpack_require__(163);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 

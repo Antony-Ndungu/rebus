@@ -29,6 +29,10 @@ const merchantSchema = new mongoose.Schema({
     location: {
         type:String,
         required: true
+    },
+    token: {
+        type: String,
+        default: ''
     }
 });
 

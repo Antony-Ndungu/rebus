@@ -1,6 +1,6 @@
-webpackJsonp([3],{
+webpackJsonp([4],{
 
-/***/ 149:
+/***/ 146:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11,11 +11,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 var SET_MERCHANT = exports.SET_MERCHANT = "SET_MERCHANT";
 var LOGOUT_MERCHANT = exports.LOGOUT_MERCHANT = "LOGOUT_MERCHANT";
-var RESET_MERCHANT_PASSWORD = exports.RESET_MERCHANT_PASSWORD = "RESET_MERCHANT_PASSWORD";
+var RESET_PASSWORD_EMAIL_SENT_MESSAGE = exports.RESET_PASSWORD_EMAIL_SENT_MESSAGE = "RESET_PASSWORD_EMAIL_SENT_MESSAGE";
+var RESET_PASSWORD = exports.RESET_PASSWORD = "RESET_PASSWORD";
+var RESET_PASSWORD_SET = exports.RESET_PASSWORD_SET = "RESET_PASSWORD_SET";
 
 /***/ }),
 
-/***/ 279:
+/***/ 163:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24,20 +26,19 @@ var RESET_MERCHANT_PASSWORD = exports.RESET_MERCHANT_PASSWORD = "RESET_MERCHANT_
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.resetMerchantPassword = exports.merchantLogout = exports.merchantLogin = undefined;
+exports.resetPasswordReset = exports.resetPassword = exports.resetMerchantPassword = exports.merchantLogout = exports.merchantLogin = undefined;
 
 var _axios = __webpack_require__(144);
 
 var _axios2 = _interopRequireDefault(_axios);
 
-var _constants = __webpack_require__(149);
+var _constants = __webpack_require__(146);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var merchantLogin = exports.merchantLogin = function merchantLogin(credentials) {
     return function (dispatch) {
         return _axios2.default.post("/api/authenticate", credentials).then(function (response) {
-            console.log(response.data);
             if (response.data.errors) {
                 return { errors: response.data.errors };
             } else if (response.data.confirmation === "fail") {
@@ -65,17 +66,36 @@ var merchantLogout = exports.merchantLogout = function merchantLogout() {
 
 var resetMerchantPassword = exports.resetMerchantPassword = function resetMerchantPassword(data) {
     return function (dispatch) {
-        _axios2.default.post("/api/password-reset", data).then(function (response) {
-            console.log(response);
+        return _axios2.default.post("/api/password-reset", data).then(function (response) {
+            if (response.data.confirmation === "success") {
+                dispatch({
+                    type: _constants.RESET_PASSWORD_EMAIL_SENT_MESSAGE,
+                    payload: response.data.message
+                });
+            } else if (response.data.confirmation === "fail") {
+                return response.data.message;
+            }
         }).catch(function (error) {
             console.log(error);
         });
     };
 };
 
+var resetPassword = exports.resetPassword = function resetPassword(data) {
+    return function (dispatch) {
+        return _axios2.default.post("/api/reset-password", data);
+    };
+};
+
+var resetPasswordReset = exports.resetPasswordReset = function resetPasswordReset() {
+    return {
+        type: _constants.RESET_PASSWORD_SET
+    };
+};
+
 /***/ }),
 
-/***/ 280:
+/***/ 238:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -89,7 +109,47 @@ var _react = __webpack_require__(9);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _classnames = __webpack_require__(225);
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var SuccessAlert = function SuccessAlert(_ref) {
+    var subject = _ref.subject,
+        message = _ref.message;
+
+    return _react2.default.createElement(
+        "div",
+        { className: "w3-panel center w3-green w3-round-large" },
+        _react2.default.createElement(
+            "h3",
+            null,
+            subject
+        ),
+        _react2.default.createElement(
+            "p",
+            null,
+            message
+        )
+    );
+};
+
+exports.default = SuccessAlert;
+
+/***/ }),
+
+/***/ 281:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react = __webpack_require__(9);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _classnames = __webpack_require__(226);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
@@ -114,7 +174,7 @@ exports.default = function (props) {
 
 /***/ }),
 
-/***/ 281:
+/***/ 282:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -150,7 +210,7 @@ exports.default = Button;
 
 /***/ }),
 
-/***/ 282:
+/***/ 283:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -159,9 +219,9 @@ exports.default = Button;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.validateForgotPasswordInput = exports.validateLoginInput = undefined;
+exports.validateResetPasswordInput = exports.validateForgotPasswordInput = exports.validateLoginInput = undefined;
 
-var _validator = __webpack_require__(226);
+var _validator = __webpack_require__(227);
 
 var validateLoginInput = exports.validateLoginInput = function validateLoginInput(credentials) {
     var errors = {};
@@ -192,18 +252,35 @@ var validateForgotPasswordInput = exports.validateForgotPasswordInput = function
     return errors;
 };
 
+var validateResetPasswordInput = exports.validateResetPasswordInput = function validateResetPasswordInput(data) {
+    var errors = {};
+
+    if ((0, _validator.isEmpty)(data.password)) {
+        errors.password = "This field is required.";
+    }
+    if ((0, _validator.isEmpty)(data.confirmPassword)) {
+        errors.confirmPassword = "This field is required.";
+    }if (!Object.keys(errors).length) {
+        if (!(0, _validator.equals)(data.password, data.confirmPassword)) {
+            errors.global = "Passwords must match.";
+        }
+    }
+
+    return errors;
+};
+
 /***/ }),
 
-/***/ 284:
+/***/ 285:
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(163);
-module.exports = __webpack_require__(486);
+__webpack_require__(164);
+module.exports = __webpack_require__(487);
 
 
 /***/ }),
 
-/***/ 486:
+/***/ 487:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -217,7 +294,7 @@ var _reactDom = __webpack_require__(9);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _App = __webpack_require__(492);
+var _App = __webpack_require__(493);
 
 var _App2 = _interopRequireDefault(_App);
 
@@ -229,7 +306,7 @@ var _store = __webpack_require__(718);
 
 var _store2 = _interopRequireDefault(_store);
 
-var _constants = __webpack_require__(149);
+var _constants = __webpack_require__(146);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -253,7 +330,7 @@ _reactDom2.default.render(_react2.default.createElement(
 
 /***/ }),
 
-/***/ 492:
+/***/ 493:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -262,6 +339,8 @@ _reactDom2.default.render(_react2.default.createElement(
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = __webpack_require__(9);
 
@@ -273,21 +352,25 @@ var _reactDom2 = _interopRequireDefault(_reactDom);
 
 var _reactRouterDom = __webpack_require__(68);
 
-var _PrivateRoute = __webpack_require__(512);
+var _PrivateRoute = __webpack_require__(513);
 
 var _PrivateRoute2 = _interopRequireDefault(_PrivateRoute);
 
 var _reactRedux = __webpack_require__(80);
 
+var _redux = __webpack_require__(47);
+
 var _axios = __webpack_require__(144);
 
 var _axios2 = _interopRequireDefault(_axios);
 
-var _Login = __webpack_require__(554);
+var _merchantActions = __webpack_require__(163);
+
+var _Login = __webpack_require__(555);
 
 var _Login2 = _interopRequireDefault(_Login);
 
-var _SuccessAlert = __webpack_require__(608);
+var _SuccessAlert = __webpack_require__(238);
 
 var _SuccessAlert2 = _interopRequireDefault(_SuccessAlert);
 
@@ -297,11 +380,23 @@ var _AsyncComponent2 = _interopRequireDefault(_AsyncComponent);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 var AsyncForgotPassword = (0, _AsyncComponent2.default)(function () {
-    return __webpack_require__.e/* import() */(1).then(__webpack_require__.bind(null, 726));
+    return __webpack_require__.e/* import() */(2).then(__webpack_require__.bind(null, 726));
+});
+var AsyncResetPassword = (0, _AsyncComponent2.default)(function () {
+    return __webpack_require__.e/* import() */(1).then(__webpack_require__.bind(null, 727));
 });
 var AsyncDashboard = (0, _AsyncComponent2.default)(function () {
-    return __webpack_require__.e/* import() */(0).then(__webpack_require__.bind(null, 727));
+    return __webpack_require__.e/* import() */(0).then(__webpack_require__.bind(null, 728));
+});
+var AsyncSucessAlert = (0, _AsyncComponent2.default)(function () {
+    return new Promise(function(resolve) { resolve(); }).then(__webpack_require__.bind(null, 238));
 });
 
 (function () {
@@ -316,40 +411,69 @@ var AsyncDashboard = (0, _AsyncComponent2.default)(function () {
     }
 })();
 
-var App = function App(props) {
-    return _react2.default.createElement(
-        "div",
-        null,
-        _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: "/", render: function render() {
-                return _react2.default.createElement(
-                    "div",
-                    null,
-                    _react2.default.createElement(
-                        _reactRouterDom.Link,
-                        { to: "/login" },
-                        "login"
-                    )
-                );
-            } }),
-        _react2.default.createElement(_reactRouterDom.Route, { path: "/login", component: _Login2.default }),
-        _react2.default.createElement(_reactRouterDom.Route, { path: "/forgot-password", component: AsyncForgotPassword }),
-        _react2.default.createElement(_reactRouterDom.Route, { path: "/email-sent", component: _SuccessAlert2.default }),
-        _react2.default.createElement(_PrivateRoute2.default, { path: "/dashboard", Component: AsyncDashboard, authed: props.isAuthenticated })
-    );
-};
+var App = function (_Component) {
+    _inherits(App, _Component);
+
+    function App() {
+        _classCallCheck(this, App);
+
+        return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).apply(this, arguments));
+    }
+
+    _createClass(App, [{
+        key: "componentWillUnmount",
+        value: function componentWillUnmount() {
+            this.props.resetPasswordReset();
+        }
+    }, {
+        key: "render",
+        value: function render() {
+            var _this2 = this;
+
+            return _react2.default.createElement(
+                "div",
+                null,
+                _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: "/", render: function render() {
+                        return _react2.default.createElement(
+                            "div",
+                            null,
+                            _react2.default.createElement(
+                                _reactRouterDom.Link,
+                                { to: "/login" },
+                                "login"
+                            )
+                        );
+                    } }),
+                _react2.default.createElement(_reactRouterDom.Route, { path: "/login", component: _Login2.default }),
+                _react2.default.createElement(_reactRouterDom.Route, { path: "/reset-password", component: AsyncResetPassword }),
+                _react2.default.createElement(_reactRouterDom.Route, { path: "/forgot-password", render: function render() {
+                        return _this2.props.passwordReset.emailSent ? _react2.default.createElement(AsyncSucessAlert, { subject: "Email sent!", message: _this2.props.passwordReset.message }) : _react2.default.createElement(AsyncForgotPassword, null);
+                    } }),
+                _react2.default.createElement(_reactRouterDom.Route, { path: "/email-sent", component: _SuccessAlert2.default }),
+                _react2.default.createElement(_PrivateRoute2.default, { path: "/dashboard", Component: AsyncDashboard, authed: this.props.isAuthenticated })
+            );
+        }
+    }]);
+
+    return App;
+}(_react.Component);
 
 var mapStateToProps = function mapStateToProps(state) {
     return {
         isAuthenticated: state.merchant.isAuthenticated,
         token: state.merchant.token,
-        passwordResetEmailSent: state.merchant.passwordResetEmailSent
+        passwordReset: state.merchant.passwordReset
     };
 };
-exports.default = (0, _reactRouterDom.withRouter)((0, _reactRedux.connect)(mapStateToProps)(App));
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+    return (0, _redux.bindActionCreators)({ resetPasswordReset: _merchantActions.resetPasswordReset }, dispatch);
+};
+exports.default = (0, _reactRouterDom.withRouter)((0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(App));
 
 /***/ }),
 
-/***/ 512:
+/***/ 513:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -383,7 +507,7 @@ exports.default = PrivateRoute;
 
 /***/ }),
 
-/***/ 554:
+/***/ 555:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -399,21 +523,21 @@ var _react = __webpack_require__(9);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _FormControl = __webpack_require__(280);
+var _FormControl = __webpack_require__(281);
 
 var _FormControl2 = _interopRequireDefault(_FormControl);
 
-var _Button = __webpack_require__(281);
+var _Button = __webpack_require__(282);
 
 var _Button2 = _interopRequireDefault(_Button);
 
-var _validation = __webpack_require__(282);
+var _validation = __webpack_require__(283);
 
-var _redux = __webpack_require__(60);
+var _redux = __webpack_require__(47);
 
 var _reactRedux = __webpack_require__(80);
 
-var _merchantActions = __webpack_require__(279);
+var _merchantActions = __webpack_require__(163);
 
 var _reactRouterDom = __webpack_require__(68);
 
@@ -576,43 +700,6 @@ exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(
 
 /***/ }),
 
-/***/ 608:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _react = __webpack_require__(9);
-
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var SuccessAlert = function SuccessAlert() {
-    return _react2.default.createElement(
-        "div",
-        { className: "w3-panel center w3-green w3-round-large" },
-        _react2.default.createElement(
-            "h3",
-            null,
-            "Email Sent!"
-        ),
-        _react2.default.createElement(
-            "p",
-            null,
-            "A password reset email has been sent to your email address."
-        )
-    );
-};
-
-exports.default = SuccessAlert;
-
-/***/ }),
-
 /***/ 609:
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -699,7 +786,7 @@ exports.default = function (importComponent) {
             value: function render() {
                 var Component = this.state.component;
 
-                return Component ? _react2.default.createElement(Component, this.prop) : _react2.default.createElement("div", { className: "loader" });
+                return Component ? _react2.default.createElement(Component, this.props) : _react2.default.createElement("div", { className: "loader" });
             }
         }]);
 
@@ -721,7 +808,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _redux = __webpack_require__(60);
+var _redux = __webpack_require__(47);
 
 var _reducers = __webpack_require__(719);
 
@@ -731,7 +818,7 @@ var _reduxLogger = __webpack_require__(721);
 
 var _reduxLogger2 = _interopRequireDefault(_reduxLogger);
 
-var _reduxThunk = __webpack_require__(278);
+var _reduxThunk = __webpack_require__(280);
 
 var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 
@@ -755,7 +842,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _redux = __webpack_require__(60);
+var _redux = __webpack_require__(47);
 
 var _merchantReducer = __webpack_require__(720);
 
@@ -779,12 +866,12 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _constants = __webpack_require__(149);
+var _constants = __webpack_require__(146);
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 exports.default = function () {
-    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { isAuthenticated: false, token: null, passwordResetEmailSent: false };
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { isAuthenticated: false, token: null, passwordReset: { emailSent: false, message: null } };
     var action = arguments[1];
 
     switch (action.type) {
@@ -792,7 +879,17 @@ exports.default = function () {
             state = Object.assign({}, state, { isAuthenticated: true, token: action.token });
             break;
         case _constants.LOGOUT_MERCHANT:
-            state = Object.assign.apply(Object, [{}].concat(_toConsumableArray(state), [{ isAuthenticated: false, token: null }]));
+            state = Object.assign({}, state, { isAuthenticated: false, token: null });
+            break;
+        case _constants.RESET_PASSWORD_EMAIL_SENT_MESSAGE:
+            state = Object.assign({}, state, {
+                passwordReset: Object.assign.apply(Object, [{}].concat(_toConsumableArray(state.passwordReset), [{ emailSent: true, message: action.payload }]))
+            });
+            break;
+        case _constants.RESET_PASSWORD_EMAIL_SENT_MESSAGE:
+            state = Object.assign({}, state, {
+                passwordReset: Object.assign.apply(Object, [{}].concat(_toConsumableArray(state.passwordReset), [{ emailSent: false, message: null }]))
+            });
             break;
     }
     return state;
@@ -815,7 +912,7 @@ exports.default = function () {
 "use strict";
 
 
-var compose = __webpack_require__(60).compose;
+var compose = __webpack_require__(47).compose;
 
 exports.__esModule = true;
 exports.composeWithDevTools = (
@@ -837,4 +934,4 @@ exports.devToolsEnhancer = (
 
 /***/ })
 
-},[284]);
+},[285]);

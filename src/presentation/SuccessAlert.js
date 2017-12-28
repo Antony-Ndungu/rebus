@@ -1,10 +1,10 @@
 import React from "react";
 
-const SuccessAlert = () => {
+const SuccessAlert = ({subject, message}) => {
     return (
         <div className="w3-panel center w3-green w3-round-large">
-            <h3>Email Sent!</h3>
-            <p>A password reset email has been sent to your email address.</p>
+            <h3>{subject}</h3>
+            <p>{message}</p>
         </div>
     );
 }

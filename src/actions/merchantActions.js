@@ -1,10 +1,9 @@
 import axios from "axios";
-import { SET_MERCHANT, LOGOUT_MERCHANT, RESET_MERCHANT_PASSWORD } from "../constants";
+import { SET_MERCHANT, LOGOUT_MERCHANT, RESET_PASSWORD, RESET_PASSWORD_EMAIL_SENT_MESSAGE, RESET_PASSWORD_SET} from "../constants";
 
 export const merchantLogin = (credentials) => {
     return dispatch => {
         return axios.post("/api/authenticate", credentials).then((response) => {
-            console.log(response.data);
             if (response.data.errors) {
                 return { errors: response.data.errors };
             }else if(response.data.confirmation === "fail"){
@@ -32,10 +31,29 @@ export const merchantLogout = () => {
 
 export const resetMerchantPassword = (data) => {
     return dispatch => {
-        axios.post("/api/password-reset", data).then((response) => {
-            console.log(response);
+        return axios.post("/api/password-reset", data).then((response) => {
+            if(response.data.confirmation === "success"){
+                dispatch({
+                    type: RESET_PASSWORD_EMAIL_SENT_MESSAGE,
+                    payload: response.data.message
+                });
+            }else if(response.data.confirmation === "fail"){
+                return response.data.message
+            }
         }).catch((error) => {
             console.log(error);
         });
+    }
+}
+
+export const resetPassword = (data) => {
+    return dispatch => {
+        return axios.post("/api/reset-password", data);
+    }
+}
+
+export const resetPasswordReset = () => {
+    return {
+        type: RESET_PASSWORD_SET
     }
 }

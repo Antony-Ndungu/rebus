@@ -11,7 +11,7 @@ const router = express.Router();
 
 router.post("/authenticate", (req, res) => {
     const errors = validateLoginInput(req.body);
-    if(Object.keys(errors).length){
+    if (Object.keys(errors).length) {
         res.json({
             confirmation: "fail",
             errors
@@ -19,15 +19,15 @@ router.post("/authenticate", (req, res) => {
         return;
     }
     const controller = controllers["merchants"];
-    controller.findOne({businessShortcode: req.body.businessShortcode}, (err, merchant) => {
-        if(err){
+    controller.findOne({ businessShortcode: req.body.businessShortcode }, (err, merchant) => {
+        if (err) {
             res.json({
                 confirmation: "fail",
                 message: err
             });
             return;
         }
-        if(!merchant){
+        if (!merchant) {
             res.json({
                 confirmation: "fail",
                 message: "Authentication failed. Invalid credentials."
@@ -35,21 +35,21 @@ router.post("/authenticate", (req, res) => {
             return;
         }
         bcrypt.compare(req.body.password, merchant.password, (err, result) => {
-            if(err){
+            if (err) {
                 res.json({
                     confirmation: "fail",
                     message: err
                 });
                 return;
             }
-            if(!result){
+            if (!result) {
                 res.json({
                     confirmation: "fail",
                     message: "Authentication failed. Invalid credentials."
                 });
                 return;
             }
-            const { businessShortcode, name } = merchant; 
+            const { businessShortcode, name } = merchant;
 
             merchant = {
                 name,
@@ -67,31 +67,107 @@ router.post("/authenticate", (req, res) => {
     });
 });
 
-router.post("/password-reset", (req, res) => {
-    const controller = controllers['merchants'];
-    controller.findOne({businessShortcode: req.body.businessShortcode}, (err, merchant) => {
-        if(err){
+router.post("/reset-password", (req, res) => {
+    const controller = controllers["merchants"];
+    let decoded = jwt.decode(req.body.token, { complete: true });
+    let businessShortcode = decoded.payload.businessShortcode
+    console.log(JSON.stringify(businessShortcode));
+    controller.findOne({ businessShortcode }, (err, merchant) => {
+        if (err) {
             res.json({
                 confirmation: "fail",
                 message: err
             });
             return;
         }
-        if(!merchant){
+        if (!merchant) {
             res.json({
                 confirmation: "fail",
-                message: "No merchant exist with the provided Business Shortcode."
+                message: "Oops! Something went wrong."
             });
             return;
         }
+        if (merchant.token === req.body.token) {
+            jwt.verify(req.body.token, config.secret, (err, decoded) => {
+                if (err) {
+                    res.json({
+                        confirmation: "fail",
+                        message: "Oops! Something went wrong."
+                    });
+                } else {
+                    const saltRounds = 10;
+                    bcrypt.genSalt(saltRounds, (err, salt) => {
+                        bcrypt.hash(req.body.password, salt, (err, hash) => {
+                            let password = hash;
+                            controller.update(merchant._id, { password }, (err, merchant) => {
+                                if (err) {
+                                    console.log(err);
+                                    return;
+                                }
+                                    res.json({
+                                        confirmation: "success",
+                                        message: "Your password has been reset successfully."
+                                    });
+                            });
+                
+                        });
+                    });                
+                }
+            });
+        }else{
+            res.json({
+                confirmation: "fail",
+                message: "Fake token"
+            });
+        }
+    });
+});
 
+router.post("/password-reset", (req, res) => {
+    const controller = controllers['merchants'];
+    controller.findOne({ businessShortcode: req.body.businessShortcode }, (err, merchant) => {
+        if (err) {
+            res.json({
+                confirmation: "fail",
+                message: err
+            });
+            return;
+        }
+        if (!merchant) {
+            res.json({
+                confirmation: "fail",
+                message: "The shortcode provided does not exist."
+            });
+            return;
+        }
+        const { businessShortcode, _id: id, email } = merchant;
+        const token = jwt.sign({ businessShortcode }, config.secret, {
+            expiresIn: 5 * 60 // token expires in 30 minutes
+        });
+        controller.update(id, { token }, (err, merchant) => {
+            if (err) {
+                console.log(err);
+                return;
+            }
+        });
+        let resetURL = `${req.protocol}://${req.get("host")}/reset-password?${token}`
         let mailOptions = {
-            from: 'Rebus Kenya',
-            to: merchant.email,
+            from: '"Rebus "<rebus.kenya@gmail.com>',
+            to: email,
             subject: 'Reset Password',
-            html: "<h1>Test email.</h1>"
+            html: `
+            <div >
+                <p style="color: black">Dear Merchant,</p>
+                <p style="color: black">Please click the link below to reset your password:</p>
+                <br/>
+                <a href="${resetURL}" style="background-color: #009688;
+                ;color: white;padding: 10px; border-radius: 5px" >Reset Password</a>
+                <br/>
+                <br/>
+                <p style="color: black">Kind Regards,<br>Rebus Kenya.</p>
+            </div>    
+            `
         };
-        
         transporter.sendMail(mailOptions, function (err, info) {
             if (err) {
                 res.json({
@@ -101,7 +177,7 @@ router.post("/password-reset", (req, res) => {
             } else {
                 res.json({
                     confirmation: "success",
-                    message: "Email sent: " + info.response
+                    message: "A password reset email has been sent to " + merchant.email + "."
                 });
             }
         });
@@ -123,11 +199,11 @@ router.post('/merchants', (req, res) => {
         bcrypt.hash(req.body.password, salt, (err, hash) => {
             req.body.password = hash;
             controller.create(req.body, (err, merchant) => {
-                if(err){
-                    if(err.code === 11000){
+                if (err) {
+                    if (err.code === 11000) {
                         res.status(403).json({
                             confirmation: "fail",
-                            message: "A user with the provided business shortcode already exists."                
+                            message: "A user with the provided business shortcode already exists."
                         });
                         return;
                     }
@@ -137,17 +213,17 @@ router.post('/merchants', (req, res) => {
                     });
                     return;
                 }
-                const token = jwt.sign({data: merchant }, config.secret, {
+                const token = jwt.sign({ data: merchant }, config.secret, {
                     expiresIn: (30 * 60) // token expires in 30 minutes
                 });
                 res.json({
                     confirmation: "success",
-                    token  
+                    token
                 });
             });
-            
+
         });
-    });   
+    });
 });
 
 
@@ -155,8 +231,8 @@ router.post('/merchants', (req, res) => {
 
 router.use((req, res, next) => {
     let token = req.headers["auth-token"];
-    if(token){
-        if(token.length < 8) {
+    if (token) {
+        if (token.length < 8) {
             res.json({
                 confirmation: "fail",
                 message: "Invalid token. Please use this format => 'Bearer <token>'."
@@ -164,20 +240,20 @@ router.use((req, res, next) => {
         }
         token = token.slice(7);
     }
-    
-    if(token){
+
+    if (token) {
         jwt.verify(token, config.secret, (err, decoded) => {
-            if(err){
+            if (err) {
                 res.json({
                     confirmation: "fail",
                     message: "Failed to authenticate token"
                 });
-            }else{
+            } else {
                 req.decoded = decoded;
                 next();
             }
         });
-    }else{
+    } else {
         res.json({
             confirmation: "fail",
             message: "No token provided"
@@ -191,7 +267,7 @@ router.get("/:resource/:id", (req, res) => {
     const resource = req.params.resource;
     const controller = controllers[resource];
     const id = req.params.id;
-    if(!controller){
+    if (!controller) {
         res.json({
             confirmation: "fail",
             message: "Invalid resource request"
@@ -199,7 +275,7 @@ router.get("/:resource/:id", (req, res) => {
         return;
     }
     controller.findById(id, (err, result) => {
-        if(err){
+        if (err) {
             res.json({
                 confirmation: "fail",
                 message: err
@@ -217,15 +293,15 @@ router.get("/:resource/:id", (req, res) => {
 router.get("/:resource", (req, res) => {
     const resource = req.params.resource;
     const controller = controllers[resource];
-    if(!controller){
+    if (!controller) {
         res.json({
             confirmation: "fail",
             message: "Invalid resource request"
         });
         return;
     }
-    controller.find(req.query, (err, results) =>{
-        if(err){
+    controller.find(req.query, (err, results) => {
+        if (err) {
             res.json({
                 confirmation: "fail",
                 message: err
@@ -242,7 +318,7 @@ router.get("/:resource", (req, res) => {
 router.post("/:resource", (req, res) => {
     const resource = req.params.resource;
     const controller = controllers[resource];
-    if(!controller){
+    if (!controller) {
         res.json({
             confirmation: "fail",
             message: "Invalid resource request"
@@ -250,7 +326,7 @@ router.post("/:resource", (req, res) => {
         return;
     }
     controller.create(req.body, (err, result) => {
-        if(err){
+        if (err) {
             res.json({
                 confirmation: "fail",
                 message: err
@@ -268,7 +344,7 @@ router.put("/:resource/:id", (req, res) => {
     const resource = req.params.resource;
     const id = req.params.id;
     const controller = controllers[resource];
-    if(!controller){
+    if (!controller) {
         res.json({
             confirmation: "fail",
             message: "Invalid resource request"
@@ -276,7 +352,7 @@ router.put("/:resource/:id", (req, res) => {
         return;
     }
     controller.update(id, req.body, (err, result) => {
-        if(err){
+        if (err) {
             res.json({
                 confirmation: "fail",
                 message: err
@@ -294,7 +370,7 @@ router.delete("/:resource/:id", (req, res) => {
     const resource = req.params.resource;
     const id = req.params.id;
     const controller = controllers[resource];
-    if(!controller){
+    if (!controller) {
         res.json({
             confirmation: "fail",
             message: "Invalid resource request"
@@ -302,7 +378,7 @@ router.delete("/:resource/:id", (req, res) => {
         return;
     }
     controller.remove(id, err => {
-        if(err){
+        if (err) {
             res.json({
                 confirmation: "fail",
                 message: err

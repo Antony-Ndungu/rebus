@@ -18,7 +18,7 @@ export default (importComponent) => {
             
             const { component:Component } = this.state;
             return (
-                Component? <Component {...this.prop} /> : <div className="loader"></div>
+                Component? <Component {...this.props} /> : <div className="loader"></div>
             );
         }
 

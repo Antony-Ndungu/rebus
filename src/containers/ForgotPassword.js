@@ -38,7 +38,17 @@ class ForgotPassword extends Component {
             this.setState({
                 errors: {}
             });
-            this.props.resetMerchantPassword({businessShortcode: this.state.businessShortcode});
+            this.props.resetMerchantPassword({businessShortcode: this.state.businessShortcode}).then((response) => {
+                if(typeof response === "string"){
+                    this.setState({
+                        isLoading: false,
+                        businessShortcode: '',
+                        errors: {
+                            global: response,
+                        }
+                    });
+                }
+            }).catch((err) => console.log(err));
         }
     }
 

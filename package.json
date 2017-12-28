@@ -4,7 +4,7 @@
   "description": "M-Pesa C2B merchant solution",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon --exec babel-node server.js --ignore public/",
+    "start": "nodemon --exec babel-node server.js --ignore public/ --ignore src/",
     "clean": "rimraf public",
     "build": "npm run clean && webpack",
     "prod": "NODE_ENV=production webpack -p"

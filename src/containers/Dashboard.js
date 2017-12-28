@@ -16,7 +16,6 @@ const Dashboard =  ({token}) => {
     }catch(e) {
         merchantName = null;
     }
-
     return <TopContainer merchantName={merchantName}/>;
 }
 
