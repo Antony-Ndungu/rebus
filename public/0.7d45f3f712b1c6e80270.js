@@ -26,21 +26,34 @@ var _Overlay = __webpack_require__(731);
 
 var _Overlay2 = _interopRequireDefault(_Overlay);
 
+var _Main = __webpack_require__(732);
+
+var _Main2 = _interopRequireDefault(_Main);
+
 var _propTypes = __webpack_require__(16);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _reactRedux = __webpack_require__(80);
 
-var _jsonwebtoken = __webpack_require__(284);
+var _redux = __webpack_require__(47);
+
+var _jsonwebtoken = __webpack_require__(285);
 
 var _jsonwebtoken2 = _interopRequireDefault(_jsonwebtoken);
+
+var _reactRouterDom = __webpack_require__(68);
+
+var _merchantActions = __webpack_require__(163);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Dashboard = function Dashboard(_ref) {
     var token = _ref.token,
-        displaySidebar = _ref.displaySidebar;
+        displaySidebar = _ref.displaySidebar,
+        navigateDashboard = _ref.navigateDashboard,
+        closeSidebar = _ref.closeSidebar,
+        dashboardNavigator = _ref.dashboardNavigator;
 
     var decoded = _jsonwebtoken2.default.decode(token, { complete: true });
     var merchantName = void 0;
@@ -55,23 +68,33 @@ var Dashboard = function Dashboard(_ref) {
         _react2.default.createElement(_TopContainer2.default, { merchantName: merchantName }),
         _react2.default.createElement("br", null),
         _react2.default.createElement("br", null),
-        _react2.default.createElement(_Sidebar2.default, { displaySidebar: displaySidebar }),
-        displaySidebar && _react2.default.createElement(_Overlay2.default, null)
+        _react2.default.createElement(_Sidebar2.default, { displaySidebar: displaySidebar, navigateDashboard: navigateDashboard, dashboardNavigator: dashboardNavigator, closeSidebar: closeSidebar }),
+        displaySidebar && _react2.default.createElement(_Overlay2.default, { closeSidebar: closeSidebar }),
+        _react2.default.createElement(_Main2.default, { dashboardNavigator: dashboardNavigator })
     );
 };
 
 Dashboard.propTypes = {
-    token: _propTypes2.default.string.isRequired
+    token: _propTypes2.default.string.isRequired,
+    displaySidebar: _propTypes2.default.bool.isRequired,
+    dashboardNavigator: _propTypes2.default.number.isRequired,
+    closeSidebar: _propTypes2.default.func.isRequired,
+    navigateDashboard: _propTypes2.default.func.isRequired
 };
 
 var mapStateToProps = function mapStateToProps(state) {
     return {
         token: state.merchant.token,
-        displaySidebar: state.merchant.displaySidebar
+        displaySidebar: state.merchant.displaySidebar,
+        dashboardNavigator: state.merchant.dashboardNavigator
     };
 };
 
-exports.default = (0, _reactRedux.connect)(mapStateToProps)(Dashboard);
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+    return (0, _redux.bindActionCreators)({ navigateDashboard: _merchantActions.navigateDashboard, closeSidebar: _merchantActions.closeSidebar }, dispatch);
+};
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Dashboard);
 
 /***/ }),
 
@@ -170,10 +193,23 @@ var _react = __webpack_require__(9);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactRouterDom = __webpack_require__(68);
+
+var _classnames = __webpack_require__(164);
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+var _propTypes = __webpack_require__(16);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Sidebar = function Sidebar(_ref) {
-    var displaySidebar = _ref.displaySidebar;
+    var displaySidebar = _ref.displaySidebar,
+        dashboardNavigator = _ref.dashboardNavigator,
+        navigateDashboard = _ref.navigateDashboard,
+        closeSidebar = _ref.closeSidebar;
 
     var style = displaySidebar ? { "z-index": 3, width: "300px", display: "block" } : { "z-index": 3, width: "300px" };
     return _react2.default.createElement(
@@ -194,48 +230,61 @@ var Sidebar = function Sidebar(_ref) {
             { className: "w3-bar-block" },
             _react2.default.createElement(
                 "a",
-                { href: "#", className: "w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black", title: "close menu" },
+                { href: "#", className: "w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black", title: "close menu", onClick: closeSidebar },
                 _react2.default.createElement("i", { className: "fa fa-remove fa-fw" }),
                 "\xA0 Close Menu"
             ),
             _react2.default.createElement(
                 "a",
-                { href: "#", className: "w3-bar-item w3-button w3-padding primary-color w3-text-white" },
+                { href: "#", className: (0, _classnames2.default)("w3-bar-item w3-button w3-padding", { "primary-color": dashboardNavigator === 0, "w3-text-white": dashboardNavigator === 0 }), onClick: function onClick() {
+                        return navigateDashboard(0);
+                    } },
                 _react2.default.createElement("i", { className: "fa fa-users fa-fw" }),
                 "\xA0 Overview"
             ),
             _react2.default.createElement(
                 "a",
-                { href: "#", className: "w3-bar-item w3-button w3-padding" },
+                { href: "#", className: (0, _classnames2.default)("w3-bar-item w3-button w3-padding", { "primary-color": dashboardNavigator === 1, "w3-text-white": dashboardNavigator === 1 }), onClick: function onClick() {
+                        return navigateDashboard(1);
+                    } },
                 _react2.default.createElement("i", { className: "fa fa-money fa-fw" }),
                 "  Payments"
             ),
             _react2.default.createElement(
                 "a",
-                { href: "#", className: "w3-bar-item w3-button w3-padding" },
+                { to: "#", className: (0, _classnames2.default)("w3-bar-item w3-button w3-padding", { "primary-color": dashboardNavigator === 2, "w3-text-white": dashboardNavigator === 2 }), onClick: function onClick() {
+                        return navigateDashboard(2);
+                    } },
                 _react2.default.createElement("i", { className: "fa fa-users fa-fw" }),
                 "  Customers"
             ),
             _react2.default.createElement(
                 "a",
-                { href: "#", className: "w3-bar-item w3-button w3-padding" },
+                { href: "#", className: (0, _classnames2.default)("w3-bar-item w3-button w3-padding", { "primary-color": dashboardNavigator === 3, "w3-text-white": dashboardNavigator === 3 }) },
                 _react2.default.createElement("i", { className: "fa fa-sitemap fa-fw" }),
                 "\xA0 Merchant Profile"
             ),
             _react2.default.createElement(
                 "a",
-                { href: "#", className: "w3-bar-item w3-button w3-padding" },
+                { href: "#", className: (0, _classnames2.default)("w3-bar-item w3-button w3-padding", { "primary-color": dashboardNavigator === 4, "w3-text-white": dashboardNavigator === 4 }) },
                 _react2.default.createElement("i", { className: "fa fa-file fa-fw" }),
                 "\xA0 Reports"
             ),
             _react2.default.createElement(
                 "a",
-                { href: "#", className: "w3-bar-item w3-button w3-padding" },
+                { href: "#", className: (0, _classnames2.default)("w3-bar-item w3-button w3-padding", { "primary-color": dashboardNavigator === 5, "w3-text-white": dashboardNavigator === 5 }) },
                 _react2.default.createElement("i", { className: "fa fa-shopping-cart fa-fw" }),
                 "\xA0 Marketing"
             )
         )
     );
+};
+
+Sidebar.propTypes = {
+    displaySidebar: _propTypes2.default.bool.isRequired,
+    dashboardNavigator: _propTypes2.default.number.isRequired,
+    navigateDashboard: _propTypes2.default.func.isRequired,
+    closeSidebar: _propTypes2.default.func.isRequired
 };
 
 exports.default = Sidebar;
@@ -256,14 +305,90 @@ var _react = __webpack_require__(9);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _propTypes = __webpack_require__(16);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Overlay = function Overlay() {
+var Overlay = function Overlay(_ref) {
+    var closeSidebar = _ref.closeSidebar;
+
     return _react2.default.createElement("div", { className: "w3-overlay w3-hide-large w3-animate-opacity", style: { cursor: "pointer", display: "block" }, title: "close side menu",
-        id: "myOverlay" });
+        id: "myOverlay", onClick: closeSidebar });
+};
+
+Overlay.propTypes = {
+    closeSidebar: _propTypes2.default.func.isRequired
 };
 
 exports.default = Overlay;
+
+/***/ }),
+
+/***/ 732:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react = __webpack_require__(9);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _AsyncComponent = __webpack_require__(284);
+
+var _AsyncComponent2 = _interopRequireDefault(_AsyncComponent);
+
+var _reactRouterDom = __webpack_require__(68);
+
+var _propTypes = __webpack_require__(16);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var AsyncOverview = (0, _AsyncComponent2.default)(function () {
+    return __webpack_require__.e/* import() */(6).then(__webpack_require__.bind(null, 733));
+});
+var AsyncPayments = (0, _AsyncComponent2.default)(function () {
+    return __webpack_require__.e/* import() */(5).then(__webpack_require__.bind(null, 734));
+});
+var AsyncCustomers = (0, _AsyncComponent2.default)(function () {
+    return __webpack_require__.e/* import() */(7).then(__webpack_require__.bind(null, 735));
+});
+
+var Main = function Main(_ref) {
+    var dashboardNavigator = _ref.dashboardNavigator;
+
+    var content = undefined;
+    switch (dashboardNavigator) {
+        case 0:
+            content = _react2.default.createElement(AsyncOverview, null);
+            break;
+        case 1:
+            content = _react2.default.createElement(AsyncPayments, null);
+            break;
+        case 2:
+            content = _react2.default.createElement(AsyncCustomers, null);
+            break;
+    }
+    return _react2.default.createElement(
+        "div",
+        { className: "w3-main", style: { "margin-left": "300px", "margin-top": "43px" } },
+        content
+    );
+};
+
+Main.propTypes = {
+    dashboardNavigator: _propTypes2.default.number.isRequired
+};
+
+exports.default = Main;
 
 /***/ })
 

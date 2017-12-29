@@ -16,6 +16,7 @@ var RESET_PASSWORD = exports.RESET_PASSWORD = "RESET_PASSWORD";
 var RESET_PASSWORD_SET = exports.RESET_PASSWORD_SET = "RESET_PASSWORD_SET";
 var OPEN_SIDEBAR = exports.OPEN_SIDEBAR = "OPEN_SIDEBAR";
 var CLOSE_SIDEBAR = exports.CLOSE_SIDEBAR = "CLOSE_SIDEBAR";
+var NAVIGATE_DASHBOARD = exports.NAVIGATE_DASHBOARD = "NAVIGATE_DASHBOARD";
 
 /***/ }),
 
@@ -28,7 +29,7 @@ var CLOSE_SIDEBAR = exports.CLOSE_SIDEBAR = "CLOSE_SIDEBAR";
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.resetPasswordReset = exports.resetPassword = exports.resetMerchantPassword = exports.closeSidebar = exports.openSidebar = exports.merchantLogout = exports.merchantLogin = undefined;
+exports.navigateDashboard = exports.resetPasswordReset = exports.resetPassword = exports.resetMerchantPassword = exports.closeSidebar = exports.openSidebar = exports.merchantLogout = exports.merchantLogin = undefined;
 
 var _axios = __webpack_require__(144);
 
@@ -106,6 +107,12 @@ var resetPasswordReset = exports.resetPasswordReset = function resetPasswordRese
         type: _constants.RESET_PASSWORD_SET
     };
 };
+var navigateDashboard = exports.navigateDashboard = function navigateDashboard(num) {
+    return {
+        type: _constants.NAVIGATE_DASHBOARD,
+        payload: num
+    };
+};
 
 /***/ }),
 
@@ -163,7 +170,7 @@ var _react = __webpack_require__(9);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _classnames = __webpack_require__(226);
+var _classnames = __webpack_require__(164);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
@@ -285,16 +292,114 @@ var validateResetPasswordInput = exports.validateResetPasswordInput = function v
 
 /***/ }),
 
-/***/ 285:
+/***/ 284:
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(164);
-module.exports = __webpack_require__(487);
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(9);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+exports.default = function (importComponent) {
+    var AsynComponent = function (_Component) {
+        _inherits(AsynComponent, _Component);
+
+        function AsynComponent() {
+            var _ref;
+
+            var _temp, _this, _ret;
+
+            _classCallCheck(this, AsynComponent);
+
+            for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+                args[_key] = arguments[_key];
+            }
+
+            return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = AsynComponent.__proto__ || Object.getPrototypeOf(AsynComponent)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+                component: null
+            }, _temp), _possibleConstructorReturn(_this, _ret);
+        }
+
+        _createClass(AsynComponent, [{
+            key: "componentDidMount",
+            value: function () {
+                var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+                    var _ref3, component;
+
+                    return regeneratorRuntime.wrap(function _callee$(_context) {
+                        while (1) {
+                            switch (_context.prev = _context.next) {
+                                case 0:
+                                    _context.next = 2;
+                                    return importComponent();
+
+                                case 2:
+                                    _ref3 = _context.sent;
+                                    component = _ref3.default;
+
+                                    this.setState({
+                                        component: component
+                                    });
+
+                                case 5:
+                                case "end":
+                                    return _context.stop();
+                            }
+                        }
+                    }, _callee, this);
+                }));
+
+                function componentDidMount() {
+                    return _ref2.apply(this, arguments);
+                }
+
+                return componentDidMount;
+            }()
+        }, {
+            key: "render",
+            value: function render() {
+                var Component = this.state.component;
+
+                return Component ? _react2.default.createElement(Component, this.props) : _react2.default.createElement("div", { className: "loader" });
+            }
+        }]);
+
+        return AsynComponent;
+    }(_react.Component);
+
+    return AsynComponent;
+};
+
+/***/ }),
+
+/***/ 286:
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(165);
+module.exports = __webpack_require__(488);
 
 
 /***/ }),
 
-/***/ 487:
+/***/ 488:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -308,7 +413,7 @@ var _reactDom = __webpack_require__(9);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _App = __webpack_require__(493);
+var _App = __webpack_require__(494);
 
 var _App2 = _interopRequireDefault(_App);
 
@@ -344,7 +449,7 @@ _reactDom2.default.render(_react2.default.createElement(
 
 /***/ }),
 
-/***/ 493:
+/***/ 494:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -366,7 +471,7 @@ var _reactDom2 = _interopRequireDefault(_reactDom);
 
 var _reactRouterDom = __webpack_require__(68);
 
-var _PrivateRoute = __webpack_require__(513);
+var _PrivateRoute = __webpack_require__(514);
 
 var _PrivateRoute2 = _interopRequireDefault(_PrivateRoute);
 
@@ -380,7 +485,7 @@ var _axios2 = _interopRequireDefault(_axios);
 
 var _merchantActions = __webpack_require__(163);
 
-var _Login = __webpack_require__(555);
+var _Login = __webpack_require__(556);
 
 var _Login2 = _interopRequireDefault(_Login);
 
@@ -388,7 +493,7 @@ var _SuccessAlert = __webpack_require__(238);
 
 var _SuccessAlert2 = _interopRequireDefault(_SuccessAlert);
 
-var _AsyncComponent = __webpack_require__(609);
+var _AsyncComponent = __webpack_require__(284);
 
 var _AsyncComponent2 = _interopRequireDefault(_AsyncComponent);
 
@@ -487,7 +592,7 @@ exports.default = (0, _reactRouterDom.withRouter)((0, _reactRedux.connect)(mapSt
 
 /***/ }),
 
-/***/ 513:
+/***/ 514:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -521,7 +626,7 @@ exports.default = PrivateRoute;
 
 /***/ }),
 
-/***/ 555:
+/***/ 556:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -714,104 +819,6 @@ exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(
 
 /***/ }),
 
-/***/ 609:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(9);
-
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-exports.default = function (importComponent) {
-    var AsynComponent = function (_Component) {
-        _inherits(AsynComponent, _Component);
-
-        function AsynComponent() {
-            var _ref;
-
-            var _temp, _this, _ret;
-
-            _classCallCheck(this, AsynComponent);
-
-            for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-                args[_key] = arguments[_key];
-            }
-
-            return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = AsynComponent.__proto__ || Object.getPrototypeOf(AsynComponent)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
-                component: null
-            }, _temp), _possibleConstructorReturn(_this, _ret);
-        }
-
-        _createClass(AsynComponent, [{
-            key: "componentDidMount",
-            value: function () {
-                var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-                    var _ref3, component;
-
-                    return regeneratorRuntime.wrap(function _callee$(_context) {
-                        while (1) {
-                            switch (_context.prev = _context.next) {
-                                case 0:
-                                    _context.next = 2;
-                                    return importComponent();
-
-                                case 2:
-                                    _ref3 = _context.sent;
-                                    component = _ref3.default;
-
-                                    this.setState({
-                                        component: component
-                                    });
-
-                                case 5:
-                                case "end":
-                                    return _context.stop();
-                            }
-                        }
-                    }, _callee, this);
-                }));
-
-                function componentDidMount() {
-                    return _ref2.apply(this, arguments);
-                }
-
-                return componentDidMount;
-            }()
-        }, {
-            key: "render",
-            value: function render() {
-                var Component = this.state.component;
-
-                return Component ? _react2.default.createElement(Component, this.props) : _react2.default.createElement("div", { className: "loader" });
-            }
-        }]);
-
-        return AsynComponent;
-    }(_react.Component);
-
-    return AsynComponent;
-};
-
-/***/ }),
-
 /***/ 718:
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -885,7 +892,7 @@ var _constants = __webpack_require__(146);
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 exports.default = function () {
-    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { isAuthenticated: false, token: null, displaySidebar: false, passwordReset: { emailSent: false, message: null } };
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { isAuthenticated: false, token: null, displaySidebar: false, dashboardNavigator: 0, passwordReset: { emailSent: false, message: null } };
     var action = arguments[1];
 
     switch (action.type) {
@@ -910,6 +917,10 @@ exports.default = function () {
             break;
         case _constants.OPEN_SIDEBAR:
             state = Object.assign({}, state, { displaySidebar: !state.displaySidebar });
+            break;
+        case _constants.NAVIGATE_DASHBOARD:
+            state = Object.assign({}, state, { dashboardNavigator: action.payload });
+            break;
     }
     return state;
 };
@@ -953,4 +964,4 @@ exports.devToolsEnhancer = (
 
 /***/ })
 
-},[285]);
+},[286]);

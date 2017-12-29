@@ -1,5 +1,5 @@
 import axios from "axios";
-import { SET_MERCHANT, LOGOUT_MERCHANT, CLOSE_SIDEBAR, OPEN_SIDEBAR,RESET_PASSWORD, RESET_PASSWORD_EMAIL_SENT_MESSAGE, RESET_PASSWORD_SET} from "../constants";
+import { SET_MERCHANT, LOGOUT_MERCHANT, CLOSE_SIDEBAR, NAVIGATE_DASHBOARD, OPEN_SIDEBAR,RESET_PASSWORD, RESET_PASSWORD_EMAIL_SENT_MESSAGE, RESET_PASSWORD_SET} from "../constants";
 
 export const merchantLogin = (credentials) => {
     return dispatch => {
@@ -67,5 +67,11 @@ export const resetPassword = (data) => {
 export const resetPasswordReset = () => {
     return {
         type: RESET_PASSWORD_SET
+    }
+}
+export const navigateDashboard = (num) => {
+    return {
+        type: NAVIGATE_DASHBOARD,
+        payload: num
     }
 }
