@@ -12,7 +12,7 @@ const TopContainer = ({ merchantName, merchantLogout, openSidebar }) => {
                 <div className="w3-dropdown-hover w3-right">
                     <button className="w3-button w3-text-white w3-hover-none w3-hover-text-light-grey">{merchantName} <i className="fa fa-caret-down"></i></button>
                     <div className="w3-dropdown-content w3-bar-block w3-border" style={{ right: 0}}>
-                        <button className="w3-bar-item w3-black w3-button w3-text-white w3-hover-none w3-hover-text-light-grey" onClick={merchantLogout}>Log out <i className="w3-right fa fa-sign-out"></i></button>
+                        <button className="w3-bar-item w3-black w3-button w3-text-white w3-hover-black w3-hover-text-light-grey" onClick={merchantLogout}>Log out <i className="w3-right fa fa-sign-out"></i></button>
                     </div>
                 </div>
             </div>

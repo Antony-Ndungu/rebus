@@ -146,7 +146,7 @@ var TopContainer = function TopContainer(_ref) {
                 { className: "w3-dropdown-hover w3-right" },
                 _react2.default.createElement(
                     "button",
-                    { className: "w3-button w3-text-white w3-hover-none w3-hover-text-light-grey" },
+                    { className: "w3-button w3-text-white w3-hover-none w3-hover-black" },
                     merchantName,
                     " ",
                     _react2.default.createElement("i", { className: "fa fa-caret-down" })
@@ -156,7 +156,7 @@ var TopContainer = function TopContainer(_ref) {
                     { className: "w3-dropdown-content w3-bar-block w3-border", style: { right: 0 } },
                     _react2.default.createElement(
                         "button",
-                        { className: "w3-bar-item w3-black w3-button w3-text-white w3-hover-none w3-hover-text-light-grey", onClick: merchantLogout },
+                        { className: "w3-bar-item w3-black w3-button w3-text-white w3-hover-black w3-hover-text-light-grey", onClick: merchantLogout },
                         "Log out ",
                         _react2.default.createElement("i", { className: "w3-right fa fa-sign-out" })
                     )

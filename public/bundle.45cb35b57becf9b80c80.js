@@ -737,65 +737,69 @@ var Login = function (_Component) {
 
             return _react2.default.createElement(
                 "div",
-                { className: "center", style: { width: "100%" } },
-                _react2.default.createElement(
-                    "h1",
-                    { className: "w3-text-teal w3-center", style: { textShadow: "1px 1px 0 #444" } },
-                    _react2.default.createElement(
-                        "b",
-                        null,
-                        "Rebus"
-                    )
-                ),
+                { style: { "padding-top": "10vh" } },
                 _react2.default.createElement(
                     "div",
-                    { className: "w3-card" },
+                    { style: { "max-width": "400px", margin: "auto" } },
                     _react2.default.createElement(
-                        "div",
-                        { className: "w3-container primary-color w3-text-white" },
+                        "h1",
+                        { className: "w3-text-teal w3-center", style: { textShadow: "1px 1px 0 #444" } },
                         _react2.default.createElement(
-                            "h2",
+                            "b",
                             null,
-                            "Login"
-                        )
-                    ),
-                    this.state.errors.global && _react2.default.createElement(
-                        "div",
-                        { className: "w3-panel w3-margin w3-red" },
-                        _react2.default.createElement(
-                            "p",
-                            null,
-                            this.state.errors.global
+                            "Rebus"
                         )
                     ),
                     _react2.default.createElement(
-                        "form",
-                        { className: "w3-container", onSubmit: this.onSubmit },
-                        _react2.default.createElement(_FormControl2.default, { error: this.state.errors.businessShortcode, label: "Business Shortcode", name: "businessShortcode", type: "text", value: this.state.businessShortcode, onChange: this.onChange }),
-                        this.state.errors.businessShortcode && _react2.default.createElement(
-                            "span",
-                            { className: "w3-text-red" },
-                            this.state.errors.businessShortcode
-                        ),
-                        _react2.default.createElement(_FormControl2.default, { error: this.state.errors.password, label: "Password", name: "password", type: "password", value: this.state.password, onChange: this.onChange }),
-                        this.state.errors.password && _react2.default.createElement(
-                            "span",
-                            { className: "w3-text-red" },
-                            this.state.errors.password
-                        ),
-                        _react2.default.createElement("p", null),
-                        _react2.default.createElement(_Button2.default, { isLoading: this.state.isLoading, text: "Log In", loadingText: "Loggin In" }),
+                        "div",
+                        { className: "w3-card" },
                         _react2.default.createElement(
-                            "span",
-                            { className: "w3-right w3-padding" },
-                            "Forgot ",
+                            "div",
+                            { className: "w3-container primary-color w3-text-white" },
                             _react2.default.createElement(
-                                _reactRouterDom.Link,
-                                { to: "/forgot-password" },
-                                "password?"
+                                "h2",
+                                null,
+                                "Login"
                             )
                         ),
-                        _react2.default.createElement("p", null)
+                        this.state.errors.global && _react2.default.createElement(
+                            "div",
+                            { className: "w3-panel w3-margin w3-red" },
+                            _react2.default.createElement(
+                                "p",
+                                null,
+                                this.state.errors.global
+                            )
+                        ),
+                        _react2.default.createElement(
+                            "form",
+                            { className: "w3-container", onSubmit: this.onSubmit },
+                            _react2.default.createElement(_FormControl2.default, { error: this.state.errors.businessShortcode, label: "Business Shortcode", name: "businessShortcode", type: "text", value: this.state.businessShortcode, onChange: this.onChange }),
+                            this.state.errors.businessShortcode && _react2.default.createElement(
+                                "span",
+                                { className: "w3-text-red" },
+                                this.state.errors.businessShortcode
+                            ),
+                            _react2.default.createElement(_FormControl2.default, { error: this.state.errors.password, label: "Password", name: "password", type: "password", value: this.state.password, onChange: this.onChange }),
+                            this.state.errors.password && _react2.default.createElement(
+                                "span",
+                                { className: "w3-text-red" },
+                                this.state.errors.password
+                            ),
+                            _react2.default.createElement("p", null),
+                            _react2.default.createElement(_Button2.default, { isLoading: this.state.isLoading, text: "Log In", loadingText: "Loggin In" }),
+                            _react2.default.createElement(
+                                "span",
+                                { className: "w3-right w3-padding" },
+                                "Forgot ",
+                                _react2.default.createElement(
+                                    _reactRouterDom.Link,
+                                    { to: "/forgot-password" },
+                                    "password?"
+                                )
+                            ),
+                            _react2.default.createElement("p", null)
+                        )
                     )
                 )
             );

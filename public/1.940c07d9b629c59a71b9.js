@@ -120,73 +120,77 @@ var ResetPassword = function (_Component) {
 
             return _react2.default.createElement(
                 "div",
-                { className: "center", style: { width: "100%" } },
-                _react2.default.createElement(
-                    "h1",
-                    { className: "w3-text-teal w3-center", style: { textShadow: "1px 1px 0 #444" } },
-                    _react2.default.createElement(
-                        "b",
-                        null,
-                        "Rebus"
-                    )
-                ),
+                { style: { "padding-top": "10vh" } },
                 _react2.default.createElement(
                     "div",
-                    { className: "w3-card" },
+                    { style: { "max-width": "400px", margin: "auto" } },
                     _react2.default.createElement(
-                        "div",
-                        { className: "w3-container primary-color w3-text-white" },
+                        "h1",
+                        { className: "w3-text-teal w3-center", style: { textShadow: "1px 1px 0 #444" } },
                         _react2.default.createElement(
-                            "h2",
+                            "b",
                             null,
-                            "Reset Password"
-                        )
-                    ),
-                    success && _react2.default.createElement(
-                        "div",
-                        { className: "w3-panel w3-margin w3-green" },
-                        _react2.default.createElement(
-                            "p",
-                            null,
-                            message
-                        )
-                    ),
-                    errors.global && _react2.default.createElement(
-                        "div",
-                        { className: "w3-panel w3-margin w3-red" },
-                        _react2.default.createElement(
-                            "p",
-                            null,
-                            errors.global
+                            "Rebus"
                         )
                     ),
                     _react2.default.createElement(
-                        "form",
-                        { className: "w3-container", onSubmit: this.onSubmit },
-                        _react2.default.createElement(_FormControl2.default, { error: errors.password, label: "New Password", name: "password", type: "password", value: password, onChange: this.onChange }),
-                        errors.password && _react2.default.createElement(
-                            "span",
-                            { className: "w3-text-red" },
-                            errors.password
-                        ),
-                        _react2.default.createElement(_FormControl2.default, { error: errors.confirmPassword, label: "Confirm Password", name: "confirmPassword", type: "password", value: confirmPassword, onChange: this.onChange }),
-                        errors.confirmPassword && _react2.default.createElement(
-                            "span",
-                            { className: "w3-text-red" },
-                            errors.confirmPassword
-                        ),
-                        _react2.default.createElement("p", null),
-                        _react2.default.createElement(_Button2.default, { isLoading: isLoading, text: "Reset Password", loadingText: "Resetting Password" }),
+                        "div",
+                        { className: "w3-card" },
                         _react2.default.createElement(
-                            "span",
-                            { className: "w3-right w3-padding" },
+                            "div",
+                            { className: "w3-container primary-color w3-text-white" },
                             _react2.default.createElement(
-                                _reactRouterDom.Link,
-                                { to: "/login" },
-                                success ? "Login" : "Cancel"
+                                "h2",
+                                null,
+                                "Reset Password"
                             )
                         ),
-                        _react2.default.createElement("p", null)
+                        success && _react2.default.createElement(
+                            "div",
+                            { className: "w3-panel w3-margin w3-green" },
+                            _react2.default.createElement(
+                                "p",
+                                null,
+                                message
+                            )
+                        ),
+                        errors.global && _react2.default.createElement(
+                            "div",
+                            { className: "w3-panel w3-margin w3-red" },
+                            _react2.default.createElement(
+                                "p",
+                                null,
+                                errors.global
+                            )
+                        ),
+                        _react2.default.createElement(
+                            "form",
+                            { className: "w3-container", onSubmit: this.onSubmit },
+                            _react2.default.createElement(_FormControl2.default, { error: errors.password, label: "New Password", name: "password", type: "password", value: password, onChange: this.onChange }),
+                            errors.password && _react2.default.createElement(
+                                "span",
+                                { className: "w3-text-red" },
+                                errors.password
+                            ),
+                            _react2.default.createElement(_FormControl2.default, { error: errors.confirmPassword, label: "Confirm Password", name: "confirmPassword", type: "password", value: confirmPassword, onChange: this.onChange }),
+                            errors.confirmPassword && _react2.default.createElement(
+                                "span",
+                                { className: "w3-text-red" },
+                                errors.confirmPassword
+                            ),
+                            _react2.default.createElement("p", null),
+                            _react2.default.createElement(_Button2.default, { isLoading: isLoading, text: "Reset Password", loadingText: "Resetting Password" }),
+                            _react2.default.createElement(
+                                "span",
+                                { className: "w3-right w3-padding" },
+                                _react2.default.createElement(
+                                    _reactRouterDom.Link,
+                                    { to: "/login" },
+                                    success ? "Login" : "Cancel"
+                                )
+                            ),
+                            _react2.default.createElement("p", null)
+                        )
                     )
                 )
             );
