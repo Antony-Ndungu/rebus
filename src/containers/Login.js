@@ -6,6 +6,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { merchantLogin } from "../actions/merchantActions";
 import { Redirect, Link } from "react-router-dom";
+import axios from "axios";
 
 
 class Login extends Component {
@@ -61,12 +62,23 @@ class Login extends Component {
 
 
         if (this.props.isAuthenticated) {
+            (function () {
+                let token = localStorage.getItem("token");
+                if (token) {
+                    axios.defaults.headers.common['auth-token'] = `Bearer ${token}`;
+                } else {
+                    axios.defaults.headers.common['auth-token'] = null;
+                    /*if setting null does not remove `Authorization` header then try     
+                      delete axios.defaults.headers.common['Authorization'];
+                    */
+                }
+            })(); 
             return <Redirect to="/dashboard" />;
         }
 
         return (
-            <div style={{"padding-top": "10vh"}}>
-                <div style={{ "max-width": "400px", margin: "auto" }}>
+            <div style={{"paddingTop": "10vh"}}>
+                <div style={{ "maxWidth": "400px", margin: "auto" }}>
                     <h1 className="w3-text-teal w3-center" style={{ textShadow: "1px 1px 0 #444" }}>
                         <b>Rebus</b>
                     </h1>

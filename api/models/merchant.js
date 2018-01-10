@@ -26,6 +26,11 @@ const merchantSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    timestamp: {
+        type: Date,
+        required: true,
+        default: Date.now()
+    },
     location: {
         type:String,
         required: true

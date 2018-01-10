@@ -3,8 +3,7 @@ import mongoose from "mongoose";
 const customerSchema = new mongoose.Schema({
     msisdn: {
         type: String,
-        required: true,
-        unique: true
+        required: true
     },
     firstname: {
         type: String,
@@ -14,6 +13,10 @@ const customerSchema = new mongoose.Schema({
         type: String
     },
     lastname: {
+        type: String,
+        required: true
+    },
+    businessShortcode: {
         type: String,
         required: true
     }

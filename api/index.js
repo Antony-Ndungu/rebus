@@ -6,8 +6,8 @@ import controllers from "./controllers";
 import transporter from "../utils/sendEmail";
 import { validateLoginInput } from "../shared/validation";
 
-const router = express.Router();
 
+const router = express.Router();
 
 router.post("/authenticate", (req, res) => {
     const errors = validateLoginInput(req.body);
@@ -104,17 +104,17 @@ router.post("/reset-password", (req, res) => {
                                     console.log(err);
                                     return;
                                 }
-                                    res.json({
-                                        confirmation: "success",
-                                        message: "Your password has been reset successfully."
-                                    });
+                                res.json({
+                                    confirmation: "success",
+                                    message: "Your password has been reset successfully."
+                                });
                             });
-                
+
                         });
-                    });                
+                    });
                 }
             });
-        }else{
+        } else {
             res.json({
                 confirmation: "fail",
                 message: "Fake token"
@@ -226,7 +226,131 @@ router.post('/merchants', (req, res) => {
     });
 });
 
+router.post("/payments", (req, res) => {
+    const paymentsController = controllers["payments"];
+    const customersController = controllers["customers"];
+    const socketsController = controllers["sockets"];
+    const customer = {
+        msisdn: req.body.msisdn,
+        firstname: req.body.firstname,
+        middlename: req.body.middlename,
+        lastname: req.body.lastname,
+        businessShortcode: req.body.businessShortcode,
+    }
+    const payment = {
+        transId: req.body.transId,
+        businessShortcode: req.body.businessShortcode,
+        transactionType: req.body.transactionType,
+        amount: req.body.amount,
+        accountNumber: req.body.accountNumber,
+        msisdn: req.body.msisdn
+    }
+    const { io } = req.body;
+    let dbSocket = undefined;
+    customersController.findOne({ msisdn: req.body.msisdn, businessShortcode: req.body.businessShortcode }, (err, cust) => {
+        if (err) {
+            res.json({
+                confirmation: "fail",
+                err: err.message
+            });
+            return;
+        }
+        if (!cust) {
+            customersController.create(customer, (err, dbCustomer) => {
+                if (err) {
+                    console.log(err);
+                    return;
+                }
 
+                customersController.count({ businessShortcode: customer.businessShortcode}, (err, count) => {
+                    if (err) {
+                        console.log(err);
+                        return;
+                    }
+                    socketsController.find({ businessShortcode: payment.businessShortcode }, (err, socket) => {
+                        if (err) {
+                            console.log(err);
+                            return;
+                        }
+                        dbSocket = socket;
+                        let cust = dbCustomer.toObject();
+                        cust.count = count;
+                        console.log(JSON.stringify(cust));
+                        if (dbSocket){
+                            for (let i = 0; i < dbSocket.length; i++){
+                                io.to(dbSocket[i].socketId).emit("new customer", cust);
+                            }
+                        }
+                            
+                        paymentsController.create(payment, (err, dbPayment) => {
+                            if (err) {
+                                console.log(err);
+                                return;
+                            }
+                            paymentsController.count({businessShortcode: payment. businessShortcode}, (err, count) => {
+                                if (err) {
+                                    console.log(err);
+                                    return;
+                                }
+                                let pay = dbPayment.toObject();
+                                pay.count = count;
+                                if (dbSocket){
+                                    for (let i = 0; i < dbSocket.length; i++){
+                                        io.to(dbSocket[i].socketId).emit("new payment", pay);
+                                    }
+                                }
+                                res.json({
+                                    confirmation: "success",
+                                    payment: dbPayment,
+                                    customer: dbCustomer
+                                });
+                                return;
+                            })
+
+                        });
+                    });
+                });
+
+
+            });
+        } else {
+            paymentsController.create(payment, (err, dbPayment) => {
+                if (err) {
+                    res.json({
+                        confirmation: "fail",
+                        err: err.message
+                    });
+                    return;
+                }
+                paymentsController.count({businessShortcode: payment.businessShortcode}, (err, count) => {
+                    socketsController.find({ businessShortcode: payment.businessShortcode }, (err, socket) => {
+                        if (err) {
+                            console.log(err);
+                            return;
+                        }
+                        console.log(socket);
+                        dbSocket = socket;
+                        let pay = dbPayment.toObject();
+                        pay.count = count;
+                        if (dbSocket){
+                            for (let i = 0; i < dbSocket.length; i++){
+                                io.to(dbSocket[i].socketId).emit("new payment", pay);
+                            }
+                        }
+                        res.json({
+                            confirmation: "success",
+                            payment: dbPayment
+                        });
+                    });
+    
+
+                });
+                
+
+            });
+        }
+    });
+});
 
 
 router.use((req, res, next) => {
@@ -235,6 +359,7 @@ router.use((req, res, next) => {
         if (token.length < 8) {
             res.json({
                 confirmation: "fail",
+                auth: "failed",
                 message: "Invalid token. Please use this format => 'Bearer <token>'."
             });
         }
@@ -246,6 +371,7 @@ router.use((req, res, next) => {
             if (err) {
                 res.json({
                     confirmation: "fail",
+                    auth: "failed",
                     message: "Failed to authenticate token"
                 });
             } else {
@@ -256,13 +382,43 @@ router.use((req, res, next) => {
     } else {
         res.json({
             confirmation: "fail",
+            auth: "failed",
             message: "No token provided"
         });
     }
 
 });
 
-
+router.get("/count/customers", (req, res) => {
+    controllers["customers"].count({businessShortcode: req.query.businessShortcode}, (err, count) => {
+        if(err){
+            res.json({
+                confirmation: "fail",
+                message: err
+            });
+            return;
+        }
+        res.json({
+            confirmation: "success",
+            count
+        });
+    });
+});
+router.get("/count/payments", (req, res) => {
+    controllers["payments"].count({businessShortcode: req.query.businessShortcode}, (err, count) => {
+        if(err){
+            res.json({
+                confirmation: "fail",
+                message: err
+            });
+            return;
+        }
+        res.json({
+            confirmation: "success",
+            count
+        });
+    });
+});
 router.get("/:resource/:id", (req, res) => {
     const resource = req.params.resource;
     const controller = controllers[resource];

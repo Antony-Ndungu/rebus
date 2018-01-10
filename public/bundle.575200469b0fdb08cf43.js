@@ -1,6 +1,6 @@
 webpackJsonp([4],{
 
-/***/ 146:
+/***/ 159:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17,6 +17,8 @@ var RESET_PASSWORD_SET = exports.RESET_PASSWORD_SET = "RESET_PASSWORD_SET";
 var OPEN_SIDEBAR = exports.OPEN_SIDEBAR = "OPEN_SIDEBAR";
 var CLOSE_SIDEBAR = exports.CLOSE_SIDEBAR = "CLOSE_SIDEBAR";
 var NAVIGATE_DASHBOARD = exports.NAVIGATE_DASHBOARD = "NAVIGATE_DASHBOARD";
+var SET_CUSTOMERS_NUMBER = exports.SET_CUSTOMERS_NUMBER = "SET_CUSTOMERS_NUMBER";
+var SET_PAYMENTS_NUMBER = exports.SET_PAYMENTS_NUMBER = "SET_PAYMENTS_NUMBER";
 
 /***/ }),
 
@@ -29,13 +31,13 @@ var NAVIGATE_DASHBOARD = exports.NAVIGATE_DASHBOARD = "NAVIGATE_DASHBOARD";
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.navigateDashboard = exports.resetPasswordReset = exports.resetPassword = exports.resetMerchantPassword = exports.closeSidebar = exports.openSidebar = exports.merchantLogout = exports.merchantLogin = undefined;
+exports.navigateDashboard = exports.resetPasswordReset = exports.resetPassword = exports.resetMerchantPassword = exports.closeSidebar = exports.openSidebar = exports.setPaymentsNumber = exports.setCustomersNumber = exports.merchantLogout = exports.merchantLogin = undefined;
 
-var _axios = __webpack_require__(144);
+var _axios = __webpack_require__(81);
 
 var _axios2 = _interopRequireDefault(_axios);
 
-var _constants = __webpack_require__(146);
+var _constants = __webpack_require__(159);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -64,6 +66,20 @@ var merchantLogout = exports.merchantLogout = function merchantLogout() {
     localStorage.removeItem("token");
     return {
         type: _constants.LOGOUT_MERCHANT
+    };
+};
+
+var setCustomersNumber = exports.setCustomersNumber = function setCustomersNumber(number) {
+    return {
+        type: _constants.SET_CUSTOMERS_NUMBER,
+        payload: number
+    };
+};
+
+var setPaymentsNumber = exports.setPaymentsNumber = function setPaymentsNumber(number) {
+    return {
+        type: _constants.SET_PAYMENTS_NUMBER,
+        payload: number
     };
 };
 
@@ -116,7 +132,7 @@ var navigateDashboard = exports.navigateDashboard = function navigateDashboard(n
 
 /***/ }),
 
-/***/ 238:
+/***/ 280:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -156,7 +172,7 @@ exports.default = SuccessAlert;
 
 /***/ }),
 
-/***/ 281:
+/***/ 283:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -170,7 +186,7 @@ var _react = __webpack_require__(9);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _classnames = __webpack_require__(164);
+var _classnames = __webpack_require__(165);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
@@ -195,7 +211,7 @@ exports.default = function (props) {
 
 /***/ }),
 
-/***/ 282:
+/***/ 284:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -231,7 +247,7 @@ exports.default = Button;
 
 /***/ }),
 
-/***/ 283:
+/***/ 285:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -242,7 +258,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.validateResetPasswordInput = exports.validateForgotPasswordInput = exports.validateLoginInput = undefined;
 
-var _validator = __webpack_require__(227);
+var _validator = __webpack_require__(269);
 
 var validateLoginInput = exports.validateLoginInput = function validateLoginInput(credentials) {
     var errors = {};
@@ -292,7 +308,7 @@ var validateResetPasswordInput = exports.validateResetPasswordInput = function v
 
 /***/ }),
 
-/***/ 284:
+/***/ 287:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -390,16 +406,16 @@ exports.default = function (importComponent) {
 
 /***/ }),
 
-/***/ 286:
+/***/ 288:
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(165);
-module.exports = __webpack_require__(488);
+__webpack_require__(166);
+module.exports = __webpack_require__(490);
 
 
 /***/ }),
 
-/***/ 488:
+/***/ 490:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -413,7 +429,7 @@ var _reactDom = __webpack_require__(9);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _App = __webpack_require__(494);
+var _App = __webpack_require__(496);
 
 var _App2 = _interopRequireDefault(_App);
 
@@ -425,7 +441,7 @@ var _store = __webpack_require__(718);
 
 var _store2 = _interopRequireDefault(_store);
 
-var _constants = __webpack_require__(146);
+var _constants = __webpack_require__(159);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -449,7 +465,7 @@ _reactDom2.default.render(_react2.default.createElement(
 
 /***/ }),
 
-/***/ 494:
+/***/ 496:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -471,7 +487,7 @@ var _reactDom2 = _interopRequireDefault(_reactDom);
 
 var _reactRouterDom = __webpack_require__(68);
 
-var _PrivateRoute = __webpack_require__(514);
+var _PrivateRoute = __webpack_require__(516);
 
 var _PrivateRoute2 = _interopRequireDefault(_PrivateRoute);
 
@@ -479,21 +495,29 @@ var _reactRedux = __webpack_require__(80);
 
 var _redux = __webpack_require__(47);
 
-var _axios = __webpack_require__(144);
+var _axios = __webpack_require__(81);
 
 var _axios2 = _interopRequireDefault(_axios);
 
+var _jsonwebtoken = __webpack_require__(164);
+
+var _jsonwebtoken2 = _interopRequireDefault(_jsonwebtoken);
+
 var _merchantActions = __webpack_require__(163);
 
-var _Login = __webpack_require__(556);
+var _propTypes = __webpack_require__(16);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _Login = __webpack_require__(664);
 
 var _Login2 = _interopRequireDefault(_Login);
 
-var _SuccessAlert = __webpack_require__(238);
+var _SuccessAlert = __webpack_require__(280);
 
 var _SuccessAlert2 = _interopRequireDefault(_SuccessAlert);
 
-var _AsyncComponent = __webpack_require__(284);
+var _AsyncComponent = __webpack_require__(287);
 
 var _AsyncComponent2 = _interopRequireDefault(_AsyncComponent);
 
@@ -515,20 +539,8 @@ var AsyncDashboard = (0, _AsyncComponent2.default)(function () {
     return __webpack_require__.e/* import() */(0).then(__webpack_require__.bind(null, 728));
 });
 var AsyncSucessAlert = (0, _AsyncComponent2.default)(function () {
-    return new Promise(function(resolve) { resolve(); }).then(__webpack_require__.bind(null, 238));
+    return new Promise(function(resolve) { resolve(); }).then(__webpack_require__.bind(null, 280));
 });
-
-(function () {
-    var token = localStorage.getItem("token");
-    if (token) {
-        _axios2.default.defaults.headers.common['auth-token'] = token;
-    } else {
-        _axios2.default.defaults.headers.common['auth-token'] = null;
-        /*if setting null does not remove `Authorization` header then try     
-          delete axios.defaults.headers.common['Authorization'];
-        */
-    }
-})();
 
 var App = function (_Component) {
     _inherits(App, _Component);
@@ -543,6 +555,32 @@ var App = function (_Component) {
         key: "componentWillUnmount",
         value: function componentWillUnmount() {
             this.props.resetPasswordReset();
+        }
+    }, {
+        key: "componentDidMount",
+        value: function componentDidMount() {
+            var token = void 0;
+            (function () {
+                token = localStorage.getItem("token");
+                if (token) {
+                    _axios2.default.defaults.headers.common['auth-token'] = "Bearer " + token;
+                } else {
+                    _axios2.default.defaults.headers.common['auth-token'] = null;
+                    /*if setting null does not remove `Authorization` header then try     
+                      delete axios.defaults.headers.common['Authorization'];
+                    */
+                }
+            })();
+
+            if ("serviceWorker" in navigator) {
+                window.addEventListener("load", function () {
+                    navigator.serviceWorker.register("./sw.js").then(function (registration) {
+                        console.log("SW registered: ", registration);
+                    }).catch(function (registrationError) {
+                        console.log("SW registration failed: ", registrationError);
+                    });
+                });
+            }
         }
     }, {
         key: "render",
@@ -586,13 +624,20 @@ var mapStateToProps = function mapStateToProps(state) {
 };
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-    return (0, _redux.bindActionCreators)({ resetPasswordReset: _merchantActions.resetPasswordReset }, dispatch);
+    return (0, _redux.bindActionCreators)({ resetPasswordReset: _merchantActions.resetPasswordReset, setCustomersNumber: _merchantActions.setCustomersNumber, setPaymentsNumber: _merchantActions.setPaymentsNumber }, dispatch);
 };
+
+App.propTypes = {
+    resetPasswordReset: _propTypes2.default.func.isRequired,
+    setCustomersNumber: _propTypes2.default.func.isRequired,
+    setPaymentsNumber: _propTypes2.default.func.isRequired
+};
+
 exports.default = (0, _reactRouterDom.withRouter)((0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(App));
 
 /***/ }),
 
-/***/ 514:
+/***/ 516:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -626,7 +671,7 @@ exports.default = PrivateRoute;
 
 /***/ }),
 
-/***/ 556:
+/***/ 664:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -642,15 +687,15 @@ var _react = __webpack_require__(9);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _FormControl = __webpack_require__(281);
+var _FormControl = __webpack_require__(283);
 
 var _FormControl2 = _interopRequireDefault(_FormControl);
 
-var _Button = __webpack_require__(282);
+var _Button = __webpack_require__(284);
 
 var _Button2 = _interopRequireDefault(_Button);
 
-var _validation = __webpack_require__(283);
+var _validation = __webpack_require__(285);
 
 var _redux = __webpack_require__(47);
 
@@ -659,6 +704,10 @@ var _reactRedux = __webpack_require__(80);
 var _merchantActions = __webpack_require__(163);
 
 var _reactRouterDom = __webpack_require__(68);
+
+var _axios = __webpack_require__(81);
+
+var _axios2 = _interopRequireDefault(_axios);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -732,15 +781,26 @@ var Login = function (_Component) {
         value: function render() {
 
             if (this.props.isAuthenticated) {
+                (function () {
+                    var token = localStorage.getItem("token");
+                    if (token) {
+                        _axios2.default.defaults.headers.common['auth-token'] = "Bearer " + token;
+                    } else {
+                        _axios2.default.defaults.headers.common['auth-token'] = null;
+                        /*if setting null does not remove `Authorization` header then try     
+                          delete axios.defaults.headers.common['Authorization'];
+                        */
+                    }
+                })();
                 return _react2.default.createElement(_reactRouterDom.Redirect, { to: "/dashboard" });
             }
 
             return _react2.default.createElement(
                 "div",
-                { style: { "padding-top": "10vh" } },
+                { style: { "paddingTop": "10vh" } },
                 _react2.default.createElement(
                     "div",
-                    { style: { "max-width": "400px", margin: "auto" } },
+                    { style: { "maxWidth": "400px", margin: "auto" } },
                     _react2.default.createElement(
                         "h1",
                         { className: "w3-text-teal w3-center", style: { textShadow: "1px 1px 0 #444" } },
@@ -843,7 +903,7 @@ var _reduxLogger = __webpack_require__(721);
 
 var _reduxLogger2 = _interopRequireDefault(_reduxLogger);
 
-var _reduxThunk = __webpack_require__(280);
+var _reduxThunk = __webpack_require__(281);
 
 var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 
@@ -891,12 +951,12 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _constants = __webpack_require__(146);
+var _constants = __webpack_require__(159);
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 exports.default = function () {
-    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { isAuthenticated: false, token: null, displaySidebar: false, dashboardNavigator: 0, passwordReset: { emailSent: false, message: null } };
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { isAuthenticated: false, token: null, displaySidebar: false, dashboardNavigator: 0, paymentsNumber: 0, customersNumber: 0, passwordReset: { emailSent: false, message: null } };
     var action = arguments[1];
 
     switch (action.type) {
@@ -924,6 +984,12 @@ exports.default = function () {
             break;
         case _constants.NAVIGATE_DASHBOARD:
             state = Object.assign({}, state, { dashboardNavigator: action.payload });
+            break;
+        case _constants.SET_CUSTOMERS_NUMBER:
+            state = Object.assign({}, state, { customersNumber: action.payload });
+            break;
+        case _constants.SET_PAYMENTS_NUMBER:
+            state = Object.assign({}, state, { paymentsNumber: action.payload });
             break;
     }
     return state;
@@ -968,4 +1034,4 @@ exports.devToolsEnhancer = (
 
 /***/ })
 
-},[286]);
+},[288]);

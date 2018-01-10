@@ -1,7 +1,13 @@
 import React from "react";
-
+import Header from "../presentation/Header";
+import Footer from "../presentation/Footer";
 const Customers = () => {
-    return <h1>Customers</h1>;
+    return (
+        <div>
+            <Header title="My Customers" icon="fa-users"/>
+            <Footer/>
+        </div>    
+    );
 }
 
 export default Customers;

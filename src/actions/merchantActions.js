@@ -1,5 +1,6 @@
 import axios from "axios";
-import { SET_MERCHANT, LOGOUT_MERCHANT, CLOSE_SIDEBAR, NAVIGATE_DASHBOARD, OPEN_SIDEBAR,RESET_PASSWORD, RESET_PASSWORD_EMAIL_SENT_MESSAGE, RESET_PASSWORD_SET} from "../constants";
+import io from "socket.io-client";
+import { SET_MERCHANT, LOGOUT_MERCHANT, CLOSE_SIDEBAR, NAVIGATE_DASHBOARD,SET_PAYMENTS_NUMBER,SET_CUSTOMERS_NUMBER, OPEN_SIDEBAR,RESET_PASSWORD, RESET_PASSWORD_EMAIL_SENT_MESSAGE, RESET_PASSWORD_SET} from "../constants";
 
 export const merchantLogin = (credentials) => {
     return dispatch => {
@@ -26,6 +27,20 @@ export const merchantLogout = () => {
     localStorage.removeItem("token");
     return {
         type: LOGOUT_MERCHANT
+    }
+}
+
+export const setCustomersNumber = (number) => {
+    return {
+        type: SET_CUSTOMERS_NUMBER,
+        payload: number
+    }
+}
+
+export const setPaymentsNumber = (number) => {
+    return {
+        type: SET_PAYMENTS_NUMBER,
+        payload: number
     }
 }
 

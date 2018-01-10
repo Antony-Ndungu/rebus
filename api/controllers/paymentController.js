@@ -54,5 +54,14 @@ export default {
             }
             callback(null, null);
         });
+    },
+    count(params, callback){
+        Payment.count(params, (err, count) => {
+            if(err){
+                callback(err, null);
+                return;
+            }
+            callback(null, count)
+        })
     }
 }

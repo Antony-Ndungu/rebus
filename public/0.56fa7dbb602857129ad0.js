@@ -1,6 +1,6 @@
 webpackJsonp([0],{
 
-/***/ 728:
+/***/ 767:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10,77 +10,133 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _react = __webpack_require__(9);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(10);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _TopContainer = __webpack_require__(729);
+var _TopContainer = __webpack_require__(770);
 
 var _TopContainer2 = _interopRequireDefault(_TopContainer);
 
-var _Sidebar = __webpack_require__(730);
+var _Sidebar = __webpack_require__(771);
 
 var _Sidebar2 = _interopRequireDefault(_Sidebar);
 
-var _Overlay = __webpack_require__(731);
+var _Overlay = __webpack_require__(772);
 
 var _Overlay2 = _interopRequireDefault(_Overlay);
 
-var _Main = __webpack_require__(732);
+var _axios = __webpack_require__(113);
+
+var _axios2 = _interopRequireDefault(_axios);
+
+var _Main = __webpack_require__(773);
 
 var _Main2 = _interopRequireDefault(_Main);
 
-var _propTypes = __webpack_require__(16);
+var _propTypes = __webpack_require__(17);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _reactRedux = __webpack_require__(80);
+var _reactRedux = __webpack_require__(83);
 
-var _redux = __webpack_require__(47);
+var _redux = __webpack_require__(48);
 
-var _jsonwebtoken = __webpack_require__(285);
+var _jsonwebtoken = __webpack_require__(305);
 
 var _jsonwebtoken2 = _interopRequireDefault(_jsonwebtoken);
 
-var _reactRouterDom = __webpack_require__(68);
+var _reactRouterDom = __webpack_require__(71);
 
-var _merchantActions = __webpack_require__(163);
+var _merchantActions = __webpack_require__(172);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Dashboard = function Dashboard(_ref) {
-    var token = _ref.token,
-        displaySidebar = _ref.displaySidebar,
-        navigateDashboard = _ref.navigateDashboard,
-        closeSidebar = _ref.closeSidebar,
-        dashboardNavigator = _ref.dashboardNavigator;
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-    var decoded = _jsonwebtoken2.default.decode(token, { complete: true });
-    var merchantName = void 0;
-    try {
-        merchantName = decoded.payload.name;
-    } catch (e) {
-        merchantName = null;
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Dashboard = function (_Component) {
+    _inherits(Dashboard, _Component);
+
+    function Dashboard() {
+        _classCallCheck(this, Dashboard);
+
+        return _possibleConstructorReturn(this, (Dashboard.__proto__ || Object.getPrototypeOf(Dashboard)).apply(this, arguments));
     }
-    return _react2.default.createElement(
-        "div",
-        null,
-        _react2.default.createElement(_TopContainer2.default, { merchantName: merchantName }),
-        _react2.default.createElement("br", null),
-        _react2.default.createElement("br", null),
-        _react2.default.createElement(_Sidebar2.default, { displaySidebar: displaySidebar, navigateDashboard: navigateDashboard, dashboardNavigator: dashboardNavigator, closeSidebar: closeSidebar }),
-        displaySidebar && _react2.default.createElement(_Overlay2.default, { closeSidebar: closeSidebar }),
-        _react2.default.createElement(_Main2.default, { dashboardNavigator: dashboardNavigator })
-    );
-};
 
-Dashboard.propTypes = {
-    token: _propTypes2.default.string.isRequired,
-    displaySidebar: _propTypes2.default.bool.isRequired,
-    dashboardNavigator: _propTypes2.default.number.isRequired,
-    closeSidebar: _propTypes2.default.func.isRequired,
-    navigateDashboard: _propTypes2.default.func.isRequired
-};
+    _createClass(Dashboard, [{
+        key: "componentDidMount",
+        value: function componentDidMount() {
+            var _this2 = this;
+
+            _axios2.default.get("/api/count/customers").then(function (_ref) {
+                var data = _ref.data;
+
+                if (data.confirmation === "fail") {
+                    if (data.auth == "failed") {
+                        _this2.props.merchantLogout();
+                    }
+                    console.log(data);
+                }
+                if (data.confirmation === "success") {
+                    _this2.props.setCustomersNumber(+data.count);
+                    _axios2.default.get("/api/count/payments").then(function (_ref2) {
+                        var data = _ref2.data;
+
+                        if (data.confirmation === "fail") {
+                            if (data.auth === "failed") {
+                                _this2.props.merchantLogout();
+                            }
+                            console.log(data);
+                        }
+                        if (data.confirmation === "success") {
+                            _this2.props.setPaymentsNumber(+data.count);
+                        }
+                    }).catch(function (error) {
+                        console.log(error);
+                    });
+                }
+            }).catch(function (error) {
+                console.log(error);
+            });
+        }
+    }, {
+        key: "render",
+        value: function render() {
+            var _props = this.props,
+                token = _props.token,
+                displaySidebar = _props.displaySidebar,
+                navigateDashboard = _props.navigateDashboard,
+                closeSidebar = _props.closeSidebar,
+                dashboardNavigator = _props.dashboardNavigator;
+
+            var decoded = _jsonwebtoken2.default.decode(token, { complete: true });
+            var merchantName = void 0;
+            try {
+                merchantName = decoded.payload.name;
+            } catch (e) {
+                merchantName = null;
+            }
+            return _react2.default.createElement(
+                "div",
+                null,
+                _react2.default.createElement(_TopContainer2.default, { merchantName: merchantName }),
+                _react2.default.createElement("br", null),
+                _react2.default.createElement("br", null),
+                _react2.default.createElement(_Sidebar2.default, { displaySidebar: displaySidebar, navigateDashboard: navigateDashboard, dashboardNavigator: dashboardNavigator, closeSidebar: closeSidebar }),
+                displaySidebar && _react2.default.createElement(_Overlay2.default, { closeSidebar: closeSidebar }),
+                _react2.default.createElement(_Main2.default, { dashboardNavigator: dashboardNavigator })
+            );
+        }
+    }]);
+
+    return Dashboard;
+}(_react.Component);
 
 var mapStateToProps = function mapStateToProps(state) {
     return {
@@ -91,14 +147,14 @@ var mapStateToProps = function mapStateToProps(state) {
 };
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-    return (0, _redux.bindActionCreators)({ navigateDashboard: _merchantActions.navigateDashboard, closeSidebar: _merchantActions.closeSidebar }, dispatch);
+    return (0, _redux.bindActionCreators)({ navigateDashboard: _merchantActions.navigateDashboard, closeSidebar: _merchantActions.closeSidebar, setCustomersNumber: _merchantActions.setCustomersNumber, setPaymentsNumber: _merchantActions.setPaymentsNumber, merchantLogout: _merchantActions.merchantLogout }, dispatch);
 };
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Dashboard);
 
 /***/ }),
 
-/***/ 729:
+/***/ 770:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -108,19 +164,19 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _react = __webpack_require__(9);
+var _react = __webpack_require__(10);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(16);
+var _propTypes = __webpack_require__(17);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _reactRedux = __webpack_require__(80);
+var _reactRedux = __webpack_require__(83);
 
-var _redux = __webpack_require__(47);
+var _redux = __webpack_require__(48);
 
-var _merchantActions = __webpack_require__(163);
+var _merchantActions = __webpack_require__(172);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -146,7 +202,7 @@ var TopContainer = function TopContainer(_ref) {
                 { className: "w3-dropdown-hover w3-right" },
                 _react2.default.createElement(
                     "button",
-                    { className: "w3-button w3-text-white w3-hover-none w3-hover-black" },
+                    { className: "w3-button w3-text-white w3-hover-none w3-hover-text-light-grey" },
                     merchantName,
                     " ",
                     _react2.default.createElement("i", { className: "fa fa-caret-down" })
@@ -179,7 +235,7 @@ exports.default = (0, _reactRedux.connect)(null, mapDispatchToProps)(TopContaine
 
 /***/ }),
 
-/***/ 730:
+/***/ 771:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -189,17 +245,17 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _react = __webpack_require__(9);
+var _react = __webpack_require__(10);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouterDom = __webpack_require__(68);
+var _reactRouterDom = __webpack_require__(71);
 
-var _classnames = __webpack_require__(164);
+var _classnames = __webpack_require__(173);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
-var _propTypes = __webpack_require__(16);
+var _propTypes = __webpack_require__(17);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -291,7 +347,7 @@ exports.default = Sidebar;
 
 /***/ }),
 
-/***/ 731:
+/***/ 772:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -301,11 +357,11 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _react = __webpack_require__(9);
+var _react = __webpack_require__(10);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(16);
+var _propTypes = __webpack_require__(17);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -326,7 +382,7 @@ exports.default = Overlay;
 
 /***/ }),
 
-/***/ 732:
+/***/ 773:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -336,30 +392,30 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _react = __webpack_require__(9);
+var _react = __webpack_require__(10);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _AsyncComponent = __webpack_require__(284);
+var _AsyncComponent = __webpack_require__(304);
 
 var _AsyncComponent2 = _interopRequireDefault(_AsyncComponent);
 
-var _reactRouterDom = __webpack_require__(68);
+var _reactRouterDom = __webpack_require__(71);
 
-var _propTypes = __webpack_require__(16);
+var _propTypes = __webpack_require__(17);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var AsyncOverview = (0, _AsyncComponent2.default)(function () {
-    return __webpack_require__.e/* import() */(6).then(__webpack_require__.bind(null, 733));
+    return __webpack_require__.e/* import() */(5).then(__webpack_require__.bind(null, 774));
 });
 var AsyncPayments = (0, _AsyncComponent2.default)(function () {
-    return __webpack_require__.e/* import() */(5).then(__webpack_require__.bind(null, 734));
+    return __webpack_require__.e/* import() */(6).then(__webpack_require__.bind(null, 777));
 });
 var AsyncCustomers = (0, _AsyncComponent2.default)(function () {
-    return __webpack_require__.e/* import() */(7).then(__webpack_require__.bind(null, 735));
+    return __webpack_require__.e/* import() */(7).then(__webpack_require__.bind(null, 778));
 });
 
 var Main = function Main(_ref) {
