@@ -10,7 +10,7 @@ import { connect } from "react-redux"
 import { bindActionCreators } from "redux";
 import jwt from "jsonwebtoken"
 import { Link } from "react-router-dom";
-import { navigateDashboard, closeSidebar,setCustomersNumber,setPaymentsNumber, merchantLogout } from "../actions/merchantActions";
+import { navigateDashboard, closeSidebar, setAccountBalance, setCustomersNumber,setPaymentsNumber, merchantLogout } from "../actions/merchantActions";
 
 
 class Dashboard extends Component {
@@ -33,13 +33,14 @@ class Dashboard extends Component {
 
         this.socket.on("new payment", data => {
             this.props.setPaymentsNumber(data.count);
+            this.props.setAccountBalance(data.accountBalance);
         });
 
         this.socket.emit("details", {
             businessShortcode
         });
         
-        axios.get(`/api/count/customers?businessShortcode=${businessShortcode}`)
+        axios.get(`/api/count-customers?businessShortcode=${businessShortcode}`)
         .then(({ data }) => {
             if(data.confirmation === "fail"){
                 if(data.auth == "failed"){
@@ -49,7 +50,7 @@ class Dashboard extends Component {
             }
             if(data.confirmation === "success"){
                 this.props.setCustomersNumber(+data.count);
-                axios.get(`/api/count/payments?businessShortcode=${businessShortcode}`)
+                axios.get(`/api/count-payments?businessShortcode=${businessShortcode}`)
                 .then(({data}) => {
                     if(data.confirmation === "fail"){
                         if(data.auth === "failed"){
@@ -59,6 +60,18 @@ class Dashboard extends Component {
                     }
                     if(data.confirmation === "success"){
                         this.props.setPaymentsNumber(+data.count);
+                        axios.get(`/api/account-balance?businessShortcode=${businessShortcode}`)
+                        .then(({data}) => {
+                            if(data.confirmation === "fail"){
+                                if(data.auth == "failed"){
+                                    this.props.merchantLogout();
+                                }
+                                console.log(data);
+                            }
+                            if(data.confirmation === "success"){
+                                this.props.setAccountBalance(data.accountBalance);
+                            }
+                        });
                     }
                 })
                 .catch( error => {
@@ -100,7 +113,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-    return bindActionCreators({ navigateDashboard, closeSidebar, setCustomersNumber, setPaymentsNumber, merchantLogout }, dispatch);
+    return bindActionCreators({ navigateDashboard, closeSidebar, setAccountBalance ,setCustomersNumber, setPaymentsNumber, merchantLogout }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

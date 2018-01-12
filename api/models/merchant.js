@@ -35,6 +35,10 @@ const merchantSchema = new mongoose.Schema({
         type:String,
         required: true
     },
+    accountBalance: {
+        type: String,
+        required: true
+    },
     token: {
         type: String,
         default: ''

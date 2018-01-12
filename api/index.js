@@ -230,6 +230,7 @@ router.post("/payments", (req, res) => {
     const paymentsController = controllers["payments"];
     const customersController = controllers["customers"];
     const socketsController = controllers["sockets"];
+    const merchantsController = controllers["merchants"];
     const customer = {
         msisdn: req.body.msisdn,
         firstname: req.body.firstname,
@@ -245,7 +246,7 @@ router.post("/payments", (req, res) => {
         accountNumber: req.body.accountNumber,
         msisdn: req.body.msisdn
     }
-    const { io } = req.body;
+    const { io, accountBalance } = req.body;
     let dbSocket = undefined;
     customersController.findOne({ msisdn: req.body.msisdn, businessShortcode: req.body.businessShortcode }, (err, cust) => {
         if (err) {
@@ -275,7 +276,6 @@ router.post("/payments", (req, res) => {
                         dbSocket = socket;
                         let cust = dbCustomer.toObject();
                         cust.count = count;
-                        console.log(JSON.stringify(cust));
                         if (dbSocket){
                             for (let i = 0; i < dbSocket.length; i++){
                                 io.to(dbSocket[i].socketId).emit("new customer", cust);
@@ -294,6 +294,7 @@ router.post("/payments", (req, res) => {
                                 }
                                 let pay = dbPayment.toObject();
                                 pay.count = count;
+                                pay.accountBalance = accountBalance;
                                 if (dbSocket){
                                     for (let i = 0; i < dbSocket.length; i++){
                                         io.to(dbSocket[i].socketId).emit("new payment", pay);
@@ -332,6 +333,7 @@ router.post("/payments", (req, res) => {
                         dbSocket = socket;
                         let pay = dbPayment.toObject();
                         pay.count = count;
+                        pay.accountBalance = accountBalance;
                         if (dbSocket){
                             for (let i = 0; i < dbSocket.length; i++){
                                 io.to(dbSocket[i].socketId).emit("new payment", pay);
@@ -350,6 +352,14 @@ router.post("/payments", (req, res) => {
             });
         }
     });
+    merchantsController.update({ businessShortcode: req.body.businessShortcode}, { accountBalance: accountBalance}, (err, merchant) => {
+        if(err){
+            console.log(err);
+            return;
+        }
+        console.log(JSON.stringify(merchant));
+    })
+
 });
 
 
@@ -389,7 +399,25 @@ router.use((req, res, next) => {
 
 });
 
-router.get("/count/customers", (req, res) => {
+router.get("/account-balance", (req, res) => {
+    const controller = controllers["merchants"];
+    controller.findOne({businessShortcode: req.query.businessShortcode}, (err, merchant) => {
+        if(err){
+            res.json({
+                confirmation: "fail",
+                message: err
+            });
+            return;
+        }
+        const { accountBalance } = merchant;
+        res.json({
+            confirmation: "success",
+            accountBalance
+        });
+    });
+});
+
+router.get("/count-customers", (req, res) => {
     controllers["customers"].count({businessShortcode: req.query.businessShortcode}, (err, count) => {
         if(err){
             res.json({
@@ -404,7 +432,7 @@ router.get("/count/customers", (req, res) => {
         });
     });
 });
-router.get("/count/payments", (req, res) => {
+router.get("/count-payments", (req, res) => {
     controllers["payments"].count({businessShortcode: req.query.businessShortcode}, (err, count) => {
         if(err){
             res.json({

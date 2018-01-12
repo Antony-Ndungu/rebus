@@ -1,6 +1,6 @@
 import axios from "axios";
 import io from "socket.io-client";
-import { SET_MERCHANT, LOGOUT_MERCHANT, CLOSE_SIDEBAR, NAVIGATE_DASHBOARD,SET_PAYMENTS_NUMBER,SET_CUSTOMERS_NUMBER, OPEN_SIDEBAR,RESET_PASSWORD, RESET_PASSWORD_EMAIL_SENT_MESSAGE, RESET_PASSWORD_SET} from "../constants";
+import { SET_MERCHANT, LOGOUT_MERCHANT, SET_ACCOUNT_BALANCE ,CLOSE_SIDEBAR, NAVIGATE_DASHBOARD,SET_PAYMENTS_NUMBER,SET_CUSTOMERS_NUMBER, OPEN_SIDEBAR,RESET_PASSWORD, RESET_PASSWORD_EMAIL_SENT_MESSAGE, RESET_PASSWORD_SET} from "../constants";
 
 export const merchantLogin = (credentials) => {
     return dispatch => {
@@ -43,6 +43,14 @@ export const setPaymentsNumber = (number) => {
         payload: number
     }
 }
+
+export const setAccountBalance = (amount) => {
+    return {
+        type: SET_ACCOUNT_BALANCE,
+        payload: amount
+    }
+}
+
 
 export const openSidebar = () => {
     return {

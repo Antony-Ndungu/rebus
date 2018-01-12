@@ -1,6 +1,6 @@
-import { SET_MERCHANT, NAVIGATE_DASHBOARD, LOGOUT_MERCHANT, CLOSE_SIDEBAR, SET_CUSTOMERS_NUMBER, SET_PAYMENTS_NUMBER, OPEN_SIDEBAR, RESET_PASSWORD_EMAIL_SENT_MESSAGE, RESET_PASSWORD_SET } from "../constants";
+import { SET_MERCHANT, NAVIGATE_DASHBOARD, LOGOUT_MERCHANT, SET_ACCOUNT_BALANCE, CLOSE_SIDEBAR, SET_CUSTOMERS_NUMBER, SET_PAYMENTS_NUMBER, OPEN_SIDEBAR, RESET_PASSWORD_EMAIL_SENT_MESSAGE, RESET_PASSWORD_SET } from "../constants";
 
-export default (state = { isAuthenticated: false, token: null, displaySidebar: false, dashboardNavigator: 0, paymentsNumber: 0, customersNumber: 0, passwordReset: { emailSent: false, message: null } }, action) => {
+export default (state = { isAuthenticated: false, token: null, accountBalance: "0", displaySidebar: false, dashboardNavigator: 0, paymentsNumber: 0, customersNumber: 0, passwordReset: { emailSent: false, message: null } }, action) => {
     switch (action.type) {
         case SET_MERCHANT:
             state = Object.assign({}, state, { isAuthenticated: true, token: action.token });
@@ -34,6 +34,9 @@ export default (state = { isAuthenticated: false, token: null, displaySidebar: f
             break;
         case SET_PAYMENTS_NUMBER:
             state = Object.assign({}, state, { paymentsNumber: action.payload });
+            break;
+        case SET_ACCOUNT_BALANCE:
+            state = Object.assign({}, state, { accountBalance: action.payload });
             break;
     }
     return state;

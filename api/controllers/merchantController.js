@@ -37,8 +37,8 @@ export default {
             callback(null, merchant);
         });
     },
-    update(id, params, callback){
-        Merchant.findByIdAndUpdate(id, params, { new: true }, (err, merchant) => {
+    update(query, params, callback){
+        Merchant.findOneAndUpdate(query, params, { new: true }, (err, merchant) => {
             if(err){
                 callback(err, null);
                 return;
