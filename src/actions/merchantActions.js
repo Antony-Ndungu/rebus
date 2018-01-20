@@ -1,6 +1,7 @@
 import axios from "axios";
 import io from "socket.io-client";
-import { SET_MERCHANT, LOGOUT_MERCHANT, SET_ACCOUNT_BALANCE ,CLOSE_SIDEBAR, NAVIGATE_DASHBOARD,SET_PAYMENTS_NUMBER,SET_CUSTOMERS_NUMBER, OPEN_SIDEBAR,RESET_PASSWORD, RESET_PASSWORD_EMAIL_SENT_MESSAGE, RESET_PASSWORD_SET} from "../constants";
+import { SET_MERCHANT, LOGOUT_MERCHANT, START_FETCHING,STOP_FETCHING,SEARCH_PAYMENTS, SET_ACCOUNT_BALANCE , CLOSE_SIDEBAR, NAVIGATE_DASHBOARD,SET_PAYMENTS_NUMBER,SET_CUSTOMERS_NUMBER, OPEN_SIDEBAR,RESET_PASSWORD, RESET_PASSWORD_EMAIL_SENT_MESSAGE, RESET_PASSWORD_SET} from "../constants";
+import queryString from "query-string";
 
 export const merchantLogin = (credentials) => {
     return dispatch => {
@@ -19,6 +20,37 @@ export const merchantLogin = (credentials) => {
             }
         }).catch((error) => {
             console.log(error);
+        });
+    }
+}
+
+export const searchPayments =  (query) => {
+    query = queryString.stringify(query);
+    return dispatch => {
+        dispatch({
+            type: START_FETCHING
+        });
+        axios.get(`/api/paginated-payments?${query}`)
+        .then(({ data }) => {
+            dispatch({
+                type: STOP_FETCHING
+            });
+            if(data.confirmation === "success"){
+                dispatch({
+                    type: SEARCH_PAYMENTS,
+                    payload: data.result
+                });
+            }else if(data.confirmation === "fail" && auth === "failed"){
+                dispatch({
+                    type: LOGOUT_MERCHANT
+                });
+            }
+        })
+        .catch((errors) => {
+            dispatch({
+                type: STOP_FETCHING
+            });
+            console.log(errors);
         });
     }
 }

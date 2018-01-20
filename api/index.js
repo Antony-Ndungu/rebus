@@ -5,9 +5,11 @@ import config from "../config";
 import controllers from "./controllers";
 import transporter from "../utils/sendEmail";
 import { validateLoginInput } from "../shared/validation";
+import Payment from "./models/payment";
 
 
 const router = express.Router();
+
 
 router.post("/authenticate", (req, res) => {
     const errors = validateLoginInput(req.body);
@@ -396,6 +398,33 @@ router.use((req, res, next) => {
             message: "No token provided"
         });
     }
+
+});
+
+router.get("/paginated-payments", (req, res) => {
+    let query = req.query;
+    let page = Number(query.page);
+    delete query.page;
+    const options = {
+        select: "transId msisdn transactionType amount timestamp",
+        limit: 5,
+        page,
+        sort: { timestamp: -1 },
+        lean: true
+    }
+    Payment.paginate(query, options)
+    .then((result) => {
+        res.json({
+            confirmation: "success",
+            result
+        });
+    })
+    .catch((error) => {
+        res.json({
+            confirmation: "fail",
+            message: error
+        });
+    });
 
 });
 

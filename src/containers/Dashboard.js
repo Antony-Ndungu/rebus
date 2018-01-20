@@ -95,7 +95,7 @@ class Dashboard extends Component {
         return (
             <div>
                 <TopContainer merchantName={merchantName} />
-                <br /><br />
+                <br />
                 <Sidebar displaySidebar={displaySidebar} navigateDashboard={navigateDashboard} dashboardNavigator={dashboardNavigator} closeSidebar={closeSidebar} />
                 {displaySidebar && <Overlay closeSidebar={closeSidebar} />}
                 <Main dashboardNavigator={dashboardNavigator}/>

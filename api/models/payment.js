@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-
+import mongoosePaginate from "mongoose-paginate";
 
 const paymentSchema = new mongoose.Schema({
     transId: {
@@ -33,6 +33,8 @@ const paymentSchema = new mongoose.Schema({
         required: true
     }
 });
+
+paymentSchema.plugin(mongoosePaginate);
 
 const Payment = mongoose.model("Payment", paymentSchema);
 

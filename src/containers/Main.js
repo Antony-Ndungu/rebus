@@ -21,7 +21,7 @@ const Main = ({ dashboardNavigator }) => {
             break;
     }
     return (
-        <div className="w3-main" style={{ "margin-left": "300px", "margin-top": "43px" }}>
+        <div className="w3-main" style={{ "margin-left": "300px", "margin-top": "20px" }}>
             {content}
         </div>
     );
