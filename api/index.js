@@ -407,7 +407,7 @@ router.get("/paginated-payments", (req, res) => {
     delete query.page;
     const options = {
         select: "transId msisdn transactionType amount timestamp",
-        limit: 5,
+        limit: 8,
         page,
         sort: { timestamp: -1 },
         lean: true

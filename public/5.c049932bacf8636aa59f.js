@@ -186,15 +186,6 @@ var Payments = function (_Component) {
                     _react2.default.createElement(
                         "div",
                         { className: "w3-responsive" },
-                        this.props.fetching && _react2.default.createElement(
-                            "div",
-                            { className: "w3-center w3-text-teal" },
-                            _react2.default.createElement(
-                                "strong",
-                                null,
-                                "Fetching..."
-                            )
-                        ),
                         _react2.default.createElement(
                             "table",
                             { className: "w3-table-all w3-hoverable w3-card-4 w3-small w3-margin-top" },
@@ -245,6 +236,15 @@ var Payments = function (_Component) {
                         )
                     )
                 ),
+                this.props.fetching ? _react2.default.createElement(
+                    "div",
+                    { className: "w3-center w3-text-teal" },
+                    _react2.default.createElement(
+                        "strong",
+                        null,
+                        "Fetching..."
+                    )
+                ) : _react2.default.createElement("br", null),
                 _react2.default.createElement(_Pagination2.default, { searchPayments: this.props.searchPayments, businessShortcode: this.businessShortcode }),
                 _react2.default.createElement(_Footer2.default, null)
             );

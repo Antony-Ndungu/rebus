@@ -17,11 +17,21 @@ class Dashboard extends Component {
 
     decoded = jwt.decode(this.props.token, { complete: true });
     socket = io();
+    saveNavigation = ()  => {
+        localStorage.setItem("dashboardNavigator", this.props.dashboardNavigator); 
+    }
     componentWillUnmount(){
         this.socket.disconnect();
+        localStorage.setItem("dashboardNavigator", this.props.dashboardNavigator);
+        window.removeEventListener("beforeunload", this.saveNavigation);
     }
+    componentWillMount(){
+        let dashboardNavigator = Number(localStorage.getItem("dashboardNavigator"));
+        this.props.navigateDashboard(dashboardNavigator); 
+    }
+
     componentDidMount() {
-        let businessShortcode;
+        let businessShortcode, dashboardNavigator;
         try {
             businessShortcode = this.decoded.payload.businessShortcode;
         }catch(err){
@@ -82,6 +92,7 @@ class Dashboard extends Component {
         .catch(error => {
             console.log(error);
         });
+        window.addEventListener("beforeunload", this.saveNavigation);
     }
     render(){
         const { displaySidebar, navigateDashboard, closeSidebar, dashboardNavigator } = this.props;

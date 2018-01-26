@@ -40,7 +40,7 @@ export const searchPayments =  (query) => {
                     type: SEARCH_PAYMENTS,
                     payload: data.result
                 });
-            }else if(data.confirmation === "fail" && auth === "failed"){
+            }else if(data.confirmation === "fail" && data.auth === "failed"){
                 dispatch({
                     type: LOGOUT_MERCHANT
                 });

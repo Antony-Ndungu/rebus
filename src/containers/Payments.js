@@ -35,7 +35,6 @@ class Payments extends Component {
                 <div className="w3-container">
                     <PaymentSearchModal />
                     <div className="w3-responsive">
-                        { this.props.fetching && <div className="w3-center w3-text-teal"><strong>Fetching...</strong></div> }
                         <table className="w3-table-all w3-hoverable w3-card-4 w3-small w3-margin-top">
                             <thead>
                                 <tr className="primary-color-text">
@@ -52,6 +51,7 @@ class Payments extends Component {
                         </table>
                     </div>
                 </div>
+                { this.props.fetching ? <div className="w3-center w3-text-teal"><strong>Fetching...</strong></div> :  <br/>}
                 <Pagination searchPayments={this.props.searchPayments} businessShortcode={this.businessShortcode}/>
                 <Footer />
             </div>
