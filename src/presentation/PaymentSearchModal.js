@@ -2,7 +2,20 @@ import React, { Component } from "react";
 
 class PaymentSearchModal extends Component {
     state = {
-        display: "none"
+        display: "none",
+        transId: "",
+        msisdn: "",
+        transactionType: "",
+        accountNumber: "",
+        from: "",
+        to: ""
+    }
+
+    handleChange = (event) => {
+        this.setState({
+            [event.target.name] : event.target.value
+        });
+        console.log(this.state);
     }
     
     displayModal = () => {
@@ -16,6 +29,7 @@ class PaymentSearchModal extends Component {
         });
     }
     render() {
+        const { msisdn, transactionType, accountNumber, transId, to, from } = this.state;
         return (
         <div>
             <button className="w3-btn w3-teal" onClick={this.displayModal}><i className="fa fa-search"></i></button>
@@ -29,34 +43,34 @@ class PaymentSearchModal extends Component {
                         <form className="w3-margin-top">
                             <div className="w3-row">
                                 <div className="w3-col m6 l6 w3-panel">
-                                    <input type="search" className="w3-input w3-border  w3-border-teal" />
+                                    <input type="search" className="w3-input w3-border  w3-border-teal" name="transId" onChange={this.handleChange} value={transId}/>
                                     <label> Transaction ID</label>
                                 </div>
                                 <div className="w3-col m6 l6 w3-panel">
-                                    <input type="search" className="w3-input w3-border w3-border-teal" />
+                                    <input type="search" className="w3-input w3-border w3-border-teal" name="msisdn" onChange={this.handleChange} value={msisdn}/>
                                     <label> MSISDN</label>
                                 </div>
                             </div>
-                            <div className="w3-row">
+                            <div className="w3-row"> 
                                 <div className="w3-col m6 l6 w3-panel">
-                                    <select className="w3-select w3-border w3-border-teal" name="option">
+                                    <select className="w3-select w3-border w3-border-teal" name="option" name="transactionType" onChange={this.handleChange} value={transactionType}>
                                         <option value="" disabled selected>Choose Transaction Type</option>
                                         <option value="1">Merchant Payment</option>
                                         <option value="2">Paybill</option>
                                     </select>
                                 </div>
                                 <div className="w3-col m6 l6 w3-panel">
-                                    <input type="search" className="w3-input w3-border w3-border-teal" />
+                                    <input type="search" className="w3-input w3-border w3-border-teal" name="accountNumber" onChange={this.handleChange} value={accountNumber}/>
                                     <label>Account Number</label>
                                 </div>
                             </div>
                             <div className="w3-row">
                                 <div className="w3-col m6 l6 w3-panel">
-                                    <input type="datetime-local" className="w3-input w3-border w3-border-teal" />
+                                    <input type="datetime-local" className="w3-input w3-border w3-border-teal" name="from" onChange={this.handleChange} value={from}/>
                                     <label>from</label>
                                 </div>
                                 <div className="w3-col m6 l6 w3-panel">
-                                    <input type="datetime-local" className="w3-input w3-border w3-border-teal" />
+                                    <input type="datetime-local" className="w3-input w3-border w3-border-teal" name="to" onChange={this.handleChange} value={to}/>
                                     <label>to</label>
                                 </div>
                             </div>

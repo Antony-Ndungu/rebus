@@ -541,6 +541,8 @@ var _react2 = _interopRequireDefault(_react);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -562,7 +564,16 @@ var PaymentSearchModal = function (_Component) {
         }
 
         return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = PaymentSearchModal.__proto__ || Object.getPrototypeOf(PaymentSearchModal)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
-            display: "none"
+            display: "none",
+            transId: "",
+            msisdn: "",
+            transactionType: "",
+            accountNumber: "",
+            from: "",
+            to: ""
+        }, _this.handleChange = function (event) {
+            _this.setState(_defineProperty({}, event.target.name, event.target.value));
+            console.log(_this.state);
         }, _this.displayModal = function () {
             _this.setState({
                 display: "block"
@@ -577,6 +588,16 @@ var PaymentSearchModal = function (_Component) {
     _createClass(PaymentSearchModal, [{
         key: "render",
         value: function render() {
+            var _React$createElement;
+
+            var _state = this.state,
+                msisdn = _state.msisdn,
+                transactionType = _state.transactionType,
+                accountNumber = _state.accountNumber,
+                transId = _state.transId,
+                to = _state.to,
+                from = _state.from;
+
             return _react2.default.createElement(
                 "div",
                 null,
@@ -617,7 +638,7 @@ var PaymentSearchModal = function (_Component) {
                                     _react2.default.createElement(
                                         "div",
                                         { className: "w3-col m6 l6 w3-panel" },
-                                        _react2.default.createElement("input", { type: "search", className: "w3-input w3-border  w3-border-teal" }),
+                                        _react2.default.createElement("input", { type: "search", className: "w3-input w3-border  w3-border-teal", name: "transId", onChange: this.handleChange, value: transId }),
                                         _react2.default.createElement(
                                             "label",
                                             null,
@@ -627,7 +648,7 @@ var PaymentSearchModal = function (_Component) {
                                     _react2.default.createElement(
                                         "div",
                                         { className: "w3-col m6 l6 w3-panel" },
-                                        _react2.default.createElement("input", { type: "search", className: "w3-input w3-border w3-border-teal" }),
+                                        _react2.default.createElement("input", { type: "search", className: "w3-input w3-border w3-border-teal", name: "msisdn", onChange: this.handleChange, value: msisdn }),
                                         _react2.default.createElement(
                                             "label",
                                             null,
@@ -643,7 +664,7 @@ var PaymentSearchModal = function (_Component) {
                                         { className: "w3-col m6 l6 w3-panel" },
                                         _react2.default.createElement(
                                             "select",
-                                            { className: "w3-select w3-border w3-border-teal", name: "option" },
+                                            (_React$createElement = { className: "w3-select w3-border w3-border-teal", name: "option" }, _defineProperty(_React$createElement, "name", "transactionType"), _defineProperty(_React$createElement, "onChange", this.handleChange), _defineProperty(_React$createElement, "value", transactionType), _React$createElement),
                                             _react2.default.createElement(
                                                 "option",
                                                 { value: "", disabled: true, selected: true },
@@ -664,7 +685,7 @@ var PaymentSearchModal = function (_Component) {
                                     _react2.default.createElement(
                                         "div",
                                         { className: "w3-col m6 l6 w3-panel" },
-                                        _react2.default.createElement("input", { type: "search", className: "w3-input w3-border w3-border-teal" }),
+                                        _react2.default.createElement("input", { type: "search", className: "w3-input w3-border w3-border-teal", name: "accountNumber", onChange: this.handleChange, value: accountNumber }),
                                         _react2.default.createElement(
                                             "label",
                                             null,
@@ -678,7 +699,7 @@ var PaymentSearchModal = function (_Component) {
                                     _react2.default.createElement(
                                         "div",
                                         { className: "w3-col m6 l6 w3-panel" },
-                                        _react2.default.createElement("input", { type: "datetime-local", className: "w3-input w3-border w3-border-teal" }),
+                                        _react2.default.createElement("input", { type: "datetime-local", className: "w3-input w3-border w3-border-teal", name: "from", onChange: this.handleChange, value: from }),
                                         _react2.default.createElement(
                                             "label",
                                             null,
@@ -688,7 +709,7 @@ var PaymentSearchModal = function (_Component) {
                                     _react2.default.createElement(
                                         "div",
                                         { className: "w3-col m6 l6 w3-panel" },
-                                        _react2.default.createElement("input", { type: "datetime-local", className: "w3-input w3-border w3-border-teal" }),
+                                        _react2.default.createElement("input", { type: "datetime-local", className: "w3-input w3-border w3-border-teal", name: "to", onChange: this.handleChange, value: to }),
                                         _react2.default.createElement(
                                             "label",
                                             null,

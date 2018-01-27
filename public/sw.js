@@ -19,28 +19,8 @@ importScripts('workbox-sw.prod.v2.1.2.js');
  */
 const fileManifest = [
   {
-    "url": "0.462352e7f0ed7278a7bf.js",
-    "revision": "720fcee2e4b619a6d7cba58c4fdd4afc"
-  },
-  {
-    "url": "0.6596820bbcf2a7f830f5.js",
-    "revision": "be1844fd01b3aac7c2c1a1b09d42499f"
-  },
-  {
     "url": "0.744c9ae84c44a67fbe39.js",
     "revision": "dc25b20ce8f75692fb97fea6241caa4b"
-  },
-  {
-    "url": "0.884cd155d304f1cd18eb.js",
-    "revision": "67b079bd106bac7053641136c8b6730e"
-  },
-  {
-    "url": "0.91ee31b7862f8202aa00.js",
-    "revision": "864a4d806cb97d86289754c3150d4741"
-  },
-  {
-    "url": "0.c7e2d430519cc1b69b32.js",
-    "revision": "24c8a950b84cd1a1424246c4cb71856e"
   },
   {
     "url": "1.00902fdfb5cea57f39bd.js",
@@ -51,8 +31,8 @@ const fileManifest = [
     "revision": "0917acb1197863e2b472f68dbc2eebdd"
   },
   {
-    "url": "5.c049932bacf8636aa59f.js",
-    "revision": "0eac2f884d8c97964f0425c4a2b16a98"
+    "url": "5.a397fecb61460f5be0c9.js",
+    "revision": "2fbb5e89e75c48d712b9364881863e7f"
   },
   {
     "url": "6.455011877adce2562f0a.js",
@@ -67,44 +47,12 @@ const fileManifest = [
     "revision": "fdb6bcbaed270587a1259a2a3b696266"
   },
   {
-    "url": "bundle.e67879e0342f64534976.js",
-    "revision": "8d142f2d9d24ea39aa8e0a05fb27b446"
-  },
-  {
     "url": "index.html",
-    "revision": "d314d21568c743274a006cbe7139d74b"
+    "revision": "f0f053fe616fa93242db56c4fc8c49bf"
   },
   {
-    "url": "manifest.179cb5ed8411511e8e6c.js",
-    "revision": "d6a7b9dec11a3ebd9f89a555e059a213"
-  },
-  {
-    "url": "manifest.423b4db6277edf8fdf7d.js",
-    "revision": "8bcdddceaf3415e0b43709e27ee9c8e6"
-  },
-  {
-    "url": "manifest.755e542d7c8dda6cc36d.js",
-    "revision": "c50ff189714fba8a8b025bb4de443c4b"
-  },
-  {
-    "url": "manifest.a21ed31780c224cf4e41.js",
-    "revision": "f65c6e150a1deea22cb25944835f48d3"
-  },
-  {
-    "url": "manifest.a703dc7575b717aa6c8e.js",
-    "revision": "9756ab677cf51d4c8bd0495db06a751e"
-  },
-  {
-    "url": "manifest.be6eb9d734a606e1f509.js",
-    "revision": "2a3406d0ba6bba74b1529a784c4c0d57"
-  },
-  {
-    "url": "manifest.f2ec63f0234fc71379a7.js",
-    "revision": "0aff9833902c284b01c3d7e23b4c13e3"
-  },
-  {
-    "url": "style.css",
-    "revision": "a64e4769f3b28dc309459cf3fdce749c"
+    "url": "manifest.442c33caf548627fa090.js",
+    "revision": "a309e11edf12c75f91a45658b08874b1"
   },
   {
     "url": "vendor.a2416f678ea1b82ea59a.js",
