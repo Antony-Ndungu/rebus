@@ -33,7 +33,7 @@ class Payments extends Component {
             <div>
                 <Header title="Payments" icon="fa-money" />
                 <div className="w3-container">
-                    <PaymentSearchModal />
+                    <PaymentSearchModal businessShortcode={this.businessShortcode}/>
                     <div className="w3-responsive">
                         <table className="w3-table-all w3-hoverable w3-card-4 w3-small w3-margin-top">
                             <thead>
@@ -42,7 +42,7 @@ class Payments extends Component {
                                     <th>MSISDN</th>
                                     <th>Transaction Type</th>
                                     <th>Amount</th>
-                                    <th>Timestamp</th>
+                                    <th>Transaction Time</th>
                                     <th>Account Number</th>
                                     <th>Action</th>
                                 </tr>

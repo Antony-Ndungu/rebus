@@ -7,7 +7,7 @@ const Payment = ({transId, msisdn, transactionType, accountNumber, amount, times
             <td>{msisdn}</td>
             <td>{transactionType}</td>
             <td>{amount}</td>
-            <td>{timestamp}</td>
+            <td>{new Date(timestamp).toUTCString()}</td>
             <td>{accountNumber}</td>
             <td><button className="w3-btn primary-color w3-text-white w3-border w3-round-large"><i className="fa fa-backward"></i> Reverse</button></td>
         </tr>

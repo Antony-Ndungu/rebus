@@ -1,4 +1,8 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { searchPayments } from "../actions/merchantActions";
+import PropTypes  from "prop-types";
 
 class PaymentSearchModal extends Component {
     state = {
@@ -16,6 +20,19 @@ class PaymentSearchModal extends Component {
             [event.target.name] : event.target.value
         });
         console.log(this.state);
+    }
+
+    submit = () => {
+        this.props.searchPayments({
+            businessShortcode: this.props.businessShortcode,
+            transId: this.state.transId,
+            msisdn: this.state.msisdn,
+            transactionType: this.state.transactionType,
+            accountNumber: this.state.accountNumber,
+            from: this.state.from,
+            to: this.state.from
+        });
+        this.closeModal();
     }
     
     displayModal = () => {
@@ -79,7 +96,7 @@ class PaymentSearchModal extends Component {
 
                     <footer className="w3-container w3-padding-16">
                         <div className="w3-panel">
-                            <button className="w3-btn w3-teal">Search</button>
+                            <button className="w3-btn w3-teal" onClick={this.submit}>Search</button>
                             <button className="w3-btn w3-red w3-right" onClick={this.closeModal}>Cancel</button>
                         </div>
                     </footer>
@@ -90,4 +107,14 @@ class PaymentSearchModal extends Component {
     }
 }
 
-export default PaymentSearchModal;
+
+
+PaymentSearchModal.propTypes = {
+    searchPayments: PropTypes.func.isRequired
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return bindActionCreators({ searchPayments }, dispatch)
+}
+
+export default connect(null, mapDispatchToProps)(PaymentSearchModal);

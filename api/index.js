@@ -265,7 +265,7 @@ router.post("/payments", (req, res) => {
                     return;
                 }
 
-                customersController.count({ businessShortcode: customer.businessShortcode}, (err, count) => {
+                customersController.count({ businessShortcode: customer.businessShortcode }, (err, count) => {
                     if (err) {
                         console.log(err);
                         return;
@@ -278,18 +278,18 @@ router.post("/payments", (req, res) => {
                         dbSocket = socket;
                         let cust = dbCustomer.toObject();
                         cust.count = count;
-                        if (dbSocket){
-                            for (let i = 0; i < dbSocket.length; i++){
+                        if (dbSocket) {
+                            for (let i = 0; i < dbSocket.length; i++) {
                                 io.to(dbSocket[i].socketId).emit("new customer", cust);
                             }
                         }
-                            
+
                         paymentsController.create(payment, (err, dbPayment) => {
                             if (err) {
                                 console.log(err);
                                 return;
                             }
-                            paymentsController.count({businessShortcode: payment. businessShortcode}, (err, count) => {
+                            paymentsController.count({ businessShortcode: payment.businessShortcode }, (err, count) => {
                                 if (err) {
                                     console.log(err);
                                     return;
@@ -297,8 +297,8 @@ router.post("/payments", (req, res) => {
                                 let pay = dbPayment.toObject();
                                 pay.count = count;
                                 pay.accountBalance = accountBalance;
-                                if (dbSocket){
-                                    for (let i = 0; i < dbSocket.length; i++){
+                                if (dbSocket) {
+                                    for (let i = 0; i < dbSocket.length; i++) {
                                         io.to(dbSocket[i].socketId).emit("new payment", pay);
                                     }
                                 }
@@ -325,7 +325,7 @@ router.post("/payments", (req, res) => {
                     });
                     return;
                 }
-                paymentsController.count({businessShortcode: payment.businessShortcode}, (err, count) => {
+                paymentsController.count({ businessShortcode: payment.businessShortcode }, (err, count) => {
                     socketsController.find({ businessShortcode: payment.businessShortcode }, (err, socket) => {
                         if (err) {
                             console.log(err);
@@ -336,8 +336,8 @@ router.post("/payments", (req, res) => {
                         let pay = dbPayment.toObject();
                         pay.count = count;
                         pay.accountBalance = accountBalance;
-                        if (dbSocket){
-                            for (let i = 0; i < dbSocket.length; i++){
+                        if (dbSocket) {
+                            for (let i = 0; i < dbSocket.length; i++) {
                                 io.to(dbSocket[i].socketId).emit("new payment", pay);
                             }
                         }
@@ -346,16 +346,16 @@ router.post("/payments", (req, res) => {
                             payment: dbPayment
                         });
                     });
-    
+
 
                 });
-                
+
 
             });
         }
     });
-    merchantsController.update({ businessShortcode: req.body.businessShortcode}, { accountBalance: accountBalance}, (err, merchant) => {
-        if(err){
+    merchantsController.update({ businessShortcode: req.body.businessShortcode }, { accountBalance: accountBalance }, (err, merchant) => {
+        if (err) {
             console.log(err);
             return;
         }
@@ -403,6 +403,43 @@ router.use((req, res, next) => {
 
 router.get("/paginated-payments", (req, res) => {
     let query = req.query;
+    if (query.transId) {
+        query.transId = new RegExp(query.transId, "i");
+    } else {
+        delete query.transId;
+    }
+    if (query.msisdn) {
+        query.msisdn = new RegExp(query.msisdn, "i");
+    } else {
+        delete query.msisdn;
+    }
+    if (query.transactionType) {
+        if (query.transactionType === "1") {
+            query.transactionType = "Merchant Payment";
+        } else if (query.transactionType === "2") {
+            query.transactionType = "Paybill"
+        } else {
+            delete query.transactionType;
+        }
+    }
+    if (!query.accountNumber) {
+        delete query.accountNumber;
+    }
+    if (query.from && query.to) {
+
+        query.$and = [
+            { timestamp: { $gte: new Date(query.from) } },
+            { timestamp: { $lte: new Date(query.to) } }
+        ];
+        delete query.from;
+        delete query.to;
+    } else if (query.from){
+        query.timestamp = { $gte: new Date(query.from)}
+        delete query.from;
+    } else {
+        delete query.from;
+        delete query.to;
+    }
     let page = Number(query.page);
     delete query.page;
     const options = {
@@ -413,25 +450,25 @@ router.get("/paginated-payments", (req, res) => {
         lean: true
     }
     Payment.paginate(query, options)
-    .then((result) => {
-        res.json({
-            confirmation: "success",
-            result
+        .then((result) => {
+            res.json({
+                confirmation: "success",
+                result
+            });
+        })
+        .catch((error) => {
+            res.json({
+                confirmation: "fail",
+                message: error
+            });
         });
-    })
-    .catch((error) => {
-        res.json({
-            confirmation: "fail",
-            message: error
-        });
-    });
 
 });
 
 router.get("/account-balance", (req, res) => {
     const controller = controllers["merchants"];
-    controller.findOne({businessShortcode: req.query.businessShortcode}, (err, merchant) => {
-        if(err){
+    controller.findOne({ businessShortcode: req.query.businessShortcode }, (err, merchant) => {
+        if (err) {
             res.json({
                 confirmation: "fail",
                 message: err
@@ -447,8 +484,8 @@ router.get("/account-balance", (req, res) => {
 });
 
 router.get("/count-customers", (req, res) => {
-    controllers["customers"].count({businessShortcode: req.query.businessShortcode}, (err, count) => {
-        if(err){
+    controllers["customers"].count({ businessShortcode: req.query.businessShortcode }, (err, count) => {
+        if (err) {
             res.json({
                 confirmation: "fail",
                 message: err
@@ -462,8 +499,8 @@ router.get("/count-customers", (req, res) => {
     });
 });
 router.get("/count-payments", (req, res) => {
-    controllers["payments"].count({businessShortcode: req.query.businessShortcode}, (err, count) => {
-        if(err){
+    controllers["payments"].count({ businessShortcode: req.query.businessShortcode }, (err, count) => {
+        if (err) {
             res.json({
                 confirmation: "fail",
                 message: err
