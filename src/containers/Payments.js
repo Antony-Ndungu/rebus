@@ -4,7 +4,7 @@ import Header from "../presentation/Header";
 import Payment from "../presentation/Payment";
 import jwt from "jsonwebtoken";
 import Pagination from "../presentation/Pagination";
-import PaymentSearchModal from "../presentation/PaymentSearchModal";
+import PaymentSearchForm from "../presentation/PaymentSearchForm";
 import { bindActionCreators } from "redux";
 import { searchPayments } from "../actions/merchantActions";
 import { connect } from "react-redux";
@@ -33,7 +33,7 @@ class Payments extends Component {
             <div>
                 <Header title="Payments" icon="fa-money" />
                 <div className="w3-container">
-                    <PaymentSearchModal businessShortcode={this.businessShortcode}/>
+                    <PaymentSearchForm />
                     <div className="w3-responsive">
                         <table className="w3-table-all w3-hoverable w3-card-4 w3-small w3-margin-top">
                             <thead>
